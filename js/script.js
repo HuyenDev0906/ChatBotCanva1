@@ -87,6 +87,7 @@ async function sendMessage() {
     chatBox.scrollTop = chatBox.scrollHeight;
     if (chatWidget && !chatWidget.classList.contains('open')) {
         unreadReplies += 1;
+        showOutsideBadge();
         updateChatNotification();
     }
 }
@@ -103,16 +104,49 @@ if (userInput) {
 const chatWidget = document.getElementById('chatWidget');
 const chatToggle = document.getElementById('chatToggle');
 const chatClose = document.getElementById('chatClose');
+const chatMinimize = document.getElementById('chatMinimize');
 const chatNotification = document.getElementById('chatNotification');
+const chatOutsideBadge = document.getElementById('chatOutsideBadge');
 let unreadReplies = 0;
+let outsideBadgeTimeout = null;
+
+function setInitialChat() {
+    const chatBox = document.getElementById('chatBox');
+    if (!chatBox || chatBox.querySelector('.msg')) {
+        return;
+    }
+
+    chatBox.innerHTML = '<div class="msg bot-msg">Xin chào! Mình là ChatBot AI. Bạn muốn hỏi gì nào?</div>';
+}
+
+function hideOutsideBadge() {
+    if (chatOutsideBadge) {
+        chatOutsideBadge.hidden = true;
+    }
+}
+
+function showOutsideBadge() {
+    if (!chatOutsideBadge) return;
+    chatOutsideBadge.hidden = false;
+
+    if (outsideBadgeTimeout) {
+        clearTimeout(outsideBadgeTimeout);
+    }
+
+    outsideBadgeTimeout = setTimeout(function () {
+        hideOutsideBadge();
+    }, 5000);
+}
 
 function updateChatNotification() {
     if (!chatToggle || !chatNotification) return;
 
-    chatNotification.hidden = unreadReplies === 0;
+    const isOpen = !!(chatWidget && chatWidget.classList.contains('open'));
+    chatNotification.hidden = isOpen || unreadReplies === 0;
+
     chatToggle.setAttribute(
         'aria-label',
-        chatWidget.classList.contains('open')
+        isOpen
             ? 'Thu nhỏ chat AI'
             : unreadReplies > 0
                 ? `Mở chat AI, ${unreadReplies} phản hồi mới`
@@ -120,27 +154,72 @@ function updateChatNotification() {
     );
 }
 
+function openChatPanel() {
+    if (!chatWidget) return;
+
+    chatWidget.classList.add('open');
+    chatWidget.classList.remove('minimized');
+    unreadReplies = 0;
+    hideOutsideBadge();
+    updateChatNotification();
+
+    if (userInput) {
+        setTimeout(function () {
+            userInput.focus();
+        }, 80);
+    }
+}
+
+function minimizeChatPanel() {
+    if (!chatWidget) return;
+
+    chatWidget.classList.remove('open');
+    chatWidget.classList.add('minimized');
+    hideOutsideBadge();
+    updateChatNotification();
+}
+
+function resetChatHistory() {
+    const chatBox = document.getElementById('chatBox');
+    if (!chatBox) return;
+
+    chatBox.innerHTML = '<div class="msg bot-msg">Xin chào! Mình là ChatBot AI. Bạn muốn hỏi gì nào?</div>';
+    chatBox.scrollTop = 0;
+}
+
 if (chatWidget && chatToggle) {
     chatToggle.addEventListener('click', function () {
-        chatWidget.classList.toggle('open');
-        const isOpen = chatWidget.classList.contains('open');
-        if (isOpen) {
-            unreadReplies = 0;
+        if (chatWidget.classList.contains('open')) {
+            minimizeChatPanel();
+            return;
         }
-        updateChatNotification();
-        if (isOpen && userInput) {
-            setTimeout(function () {
-                userInput.focus();
-            }, 80);
-        }
+
+        openChatPanel();
+    });
+}
+
+if (chatWidget && chatMinimize) {
+    chatMinimize.addEventListener('click', function (event) {
+        event.stopPropagation();
+        minimizeChatPanel();
     });
 }
 
 if (chatWidget && chatClose) {
-    chatClose.addEventListener('click', function () {
+    chatClose.addEventListener('click', function (event) {
+        event.stopPropagation();
         chatWidget.classList.remove('open');
+        chatWidget.classList.remove('minimized');
+        unreadReplies = 0;
+        hideOutsideBadge();
+        resetChatHistory();
         updateChatNotification();
     });
+}
+
+if (chatWidget) {
+    chatWidget.classList.remove('minimized');
+    updateChatNotification();
 }
 
 const canvaFrame = document.getElementById('canvaFrame');
