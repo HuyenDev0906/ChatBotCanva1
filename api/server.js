@@ -10,7 +10,7 @@ const envPath = path.join(rootDir, '.env');
 // Settings
 // =========================
 
-const MODEL_NAME = 'gemini-2.5-flash';
+const MODEL_NAME = 'gemini-3.5-flash-lite';
 const MAX_BODY_BYTES = 20 * 1024;        // 20 KB
 const MAX_MESSAGE_CHARS = 1000;
 const MAX_HISTORY_ITEMS = 10;
