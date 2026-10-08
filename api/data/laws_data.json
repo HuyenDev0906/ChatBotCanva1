@@ -1,0 +1,17 @@
+{
+  "legalFrameworks": [
+    {
+      "law": "Nghị định 15/2020/NĐ-CP (Điều 101)",
+      "content": "Quy định xử phạt vi phạm hành chính đối với hành vi vu khống, cung cấp thông tin sai sự thật, xúc phạm danh dự, uy tín, nhân phẩm của cá nhân trên mạng xã hội."
+    },
+    {
+      "law": "Luật An ninh mạng 2018 (Điều 8 & Điều 16)",
+      "content": "Nghiêm cấm việc sử dụng không gian mạng để đưa thông tin bịa đặt, sai sự thật, làm nhục hoặc xúc phạm danh dự của người khác."
+    },
+    {
+      "law": "Bộ luật Hình sự 2015 (Sửa đổi 2017)",
+      "content": "Điều 155 (Tội làm nhục người khác) và Điều 156 (Tội vu khống) áp dụng đối với các hành vi xúc phạm nghiêm trọng nhân phẩm, danh dự của người khác."
+    }
+  ],
+  "noteForBot": "Khi tư vấn, hãy giải thích nhẹ nhàng cho học sinh hiểu rằng hành vi công kích nặc danh là vi phạm pháp luật, lỗi thuộc về kẻ vi phạm chứ không phải lỗi của nạn nhân."
+}

@@ -1,0 +1,17 @@
+{
+  "cyberbullyingTypes": [
+    "Chê bai ngoại hình (body shaming), năng lực qua tài khoản ảo.",
+    "Đồn thổi tin sai sự thật trên confession, diễn đàn trường học, trang ẩn danh (NGL, Sarahah).",
+    "Lập nhóm chat kín cô lập, tẩy chay.",
+    "Nhắn tin đe dọa nặc danh, chế ảnh bôi nhọ."
+  ],
+  "rule3S": {
+    "Stop": "Dừng tranh cãi/trả đũa ngay lập tức để không làm tình huống leo thang.",
+    "Save": "Chụp màn hình tin nhắn, bài viết, tài khoản ảo làm bằng chứng số.",
+    "Support": "Gửi chứng cứ và chia sẻ với người đáng tin cậy (Thầy cô, Phụ huynh, Chuyên gia)."
+  },
+  "emotionalTechniques": {
+    "boxBreathing444": "Kỹ thuật thở 4-4-4: Hít vào bằng mũi 4s -> Giữ hơi 4s -> Thở ra bằng miệng 4s -> Giữ nguyên 4s.",
+    "grounding54321": "Kỹ thuật nối đất: Quan sát 5 vật quanh bạn -> Cảm nhận 4 xúc giác -> Lắng nghe 3 âm thanh -> Nhận biết 2 mùi hương -> Cảm nhận 1 vị."
+  }
+}
