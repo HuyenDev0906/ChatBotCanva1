@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js" defer></script>
+</head>
+<body>
+    <div class="canva-shell">
+        <div class="canva-embed-wrap">
+            <iframe id="canvaFrame" loading="lazy" src="https://www.canva.com/design/DAHGv19_Kng/YcMYbKgoVYT-yD_LYlxa4g/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen" title="Canva preview"></iframe>
+        </div>
+        <div id="canvaFallback" class="canva-fallback" hidden>
+            <p>Không thể hiển thị bản nhúng Canva.</p>
+            <a href="https://www.canva.com/design/DAHGv19_Kng/YcMYbKgoVYT-yD_LYlxa4g/view" target="_blank" rel="noopener noreferrer">Mở Canva ở tab mới</a>
+        </div>
+    </div>
+
+    <div class="chat-widget" id="chatWidget">
+        <button class="chat-toggle" id="chatToggle" type="button" aria-label="Mở chat AI">
+            <span class="robot-icon">🤖</span>
+        </button>
+
+        <div class="chat-container" id="chatBoxPanel">
+            <div class="chat-header">
+                <span>Trợ Lý AI</span>
+                <button type="button" class="chat-close" id="chatClose" aria-label="Đóng chat">×</button>
+            </div>
+            <div class="chat-messages" id="chatBox">
+                <div class="msg bot-msg">Xin chào! Mình là ChatBot AI. Bạn muốn hỏi gì nào?</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="userInput" placeholder="Hỏi AI bất cứ điều gì...">
+                <button type="button" onclick="sendMessage()">Gửi</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
