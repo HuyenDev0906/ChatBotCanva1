@@ -255,6 +255,7 @@ async function handleApi(req, res) {
 
     // Only POST
     if (req.method !== 'POST') {
+        res.setHeader('Allow', 'POST, OPTIONS');
         sendJson(res, 405, {
             error: 'Chỉ chấp nhận phương thức POST.'
         });

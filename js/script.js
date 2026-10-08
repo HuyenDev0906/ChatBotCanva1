@@ -1,12 +1,13 @@
 function getApiUrl() {
-    const currentOrigin = window.location.origin;
-    const currentPort = window.location.port;
+    const { protocol, hostname, origin } = window.location;
+    const isLocalHost = ['localhost', '127.0.0.1', '[::1]'].includes(hostname);
 
-    if (currentPort === '8000' || currentPort === '8080') {
-        return 'http://localhost:3000/api/sever';
+    if (protocol === 'file:' || isLocalHost) {
+        const apiHost = hostname === '127.0.0.1' ? hostname : 'localhost';
+        return `http://${apiHost}:3000/api/sever`;
     }
 
-    return currentOrigin + '/api/sever';
+    return new URL('/api/sever', origin).href;
 }
 
 async function fetchWithTimeout(url, options, timeoutMs = 25000) {
@@ -30,12 +31,17 @@ async function sendMessage() {
 
     if (!text) return;
 
-    chatBox.insertAdjacentHTML('beforeend', `<div class="msg user-msg">${text}</div>`);
+    const userMessage = document.createElement('div');
+    userMessage.className = 'msg user-msg';
+    userMessage.textContent = text;
+    chatBox.appendChild(userMessage);
     inputEl.value = '';
     chatBox.scrollTop = chatBox.scrollHeight;
 
-    const loadingId = 'load-' + Date.now();
-    chatBox.insertAdjacentHTML('beforeend', `<div class="msg bot-msg" id="${loadingId}">AI đang suy nghĩ...</div>`);
+    const loadingMessage = document.createElement('div');
+    loadingMessage.className = 'msg bot-msg';
+    loadingMessage.textContent = 'AI đang suy nghĩ...';
+    chatBox.appendChild(loadingMessage);
     chatBox.scrollTop = chatBox.scrollHeight;
 
     try {
@@ -58,7 +64,7 @@ async function sendMessage() {
         }
 
         if (!response.ok) {
-            throw new Error((data && data.error) || 'Lỗi máy chủ');
+            throw new Error(`HTTP ${response.status}: ${(data && data.error) || 'Lỗi máy chủ'}`);
         }
 
         var reply = data && data.reply ? data.reply : '';
@@ -73,12 +79,16 @@ async function sendMessage() {
             reply = 'Không có phản hồi từ AI.';
         }
 
-        document.getElementById(loadingId).innerText = reply;
+        loadingMessage.textContent = reply;
     } catch (error) {
-        document.getElementById(loadingId).innerText = error.message || 'Lỗi kết nối server. Vui lòng thử lại.';
+        loadingMessage.textContent = error.message || 'Lỗi kết nối server. Vui lòng thử lại.';
     }
 
     chatBox.scrollTop = chatBox.scrollHeight;
+    if (chatWidget && !chatWidget.classList.contains('open')) {
+        unreadReplies += 1;
+        updateChatNotification();
+    }
 }
 
 const userInput = document.getElementById('userInput');
@@ -93,12 +103,31 @@ if (userInput) {
 const chatWidget = document.getElementById('chatWidget');
 const chatToggle = document.getElementById('chatToggle');
 const chatClose = document.getElementById('chatClose');
+const chatNotification = document.getElementById('chatNotification');
+let unreadReplies = 0;
+
+function updateChatNotification() {
+    if (!chatToggle || !chatNotification) return;
+
+    chatNotification.hidden = unreadReplies === 0;
+    chatToggle.setAttribute(
+        'aria-label',
+        chatWidget.classList.contains('open')
+            ? 'Thu nhỏ chat AI'
+            : unreadReplies > 0
+                ? `Mở chat AI, ${unreadReplies} phản hồi mới`
+                : 'Mở chat AI'
+    );
+}
 
 if (chatWidget && chatToggle) {
     chatToggle.addEventListener('click', function () {
         chatWidget.classList.toggle('open');
         const isOpen = chatWidget.classList.contains('open');
-        chatToggle.setAttribute('aria-label', isOpen ? 'Đóng chat AI' : 'Mở chat AI');
+        if (isOpen) {
+            unreadReplies = 0;
+        }
+        updateChatNotification();
         if (isOpen && userInput) {
             setTimeout(function () {
                 userInput.focus();
@@ -110,9 +139,7 @@ if (chatWidget && chatToggle) {
 if (chatWidget && chatClose) {
     chatClose.addEventListener('click', function () {
         chatWidget.classList.remove('open');
-        if (chatToggle) {
-            chatToggle.setAttribute('aria-label', 'Mở chat AI');
-        }
+        updateChatNotification();
     });
 }
 
