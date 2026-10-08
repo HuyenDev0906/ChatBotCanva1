@@ -8,7 +8,13 @@
       "sourceUrl": "https://vbpl.vn/hanoi/Pages/vbpq-toanvan.aspx?ItemID=128348",
       "verified": true,
       "verifiedDate": "2026-10-09",
-      "effectiveStatus": "Cơ sở dữ liệu VBPL ghi còn hiệu lực; cần kiểm tra cập nhật khi triển khai"
+      "effectiveStatus": "Cơ sở dữ liệu VBPL ghi còn hiệu lực; cần kiểm tra cập nhật khi triển khai",
+      "article": null,
+      "citationLevel": "document_only",
+      "useCases": [
+        "Phòng, chống bạo lực học đường"
+      ],
+      "verificationNote": "Chỉ trích dẫn ở cấp văn bản; chưa xác minh điều khoản cụ thể."
     },
     {
       "id": "TT15_2026",
@@ -18,7 +24,13 @@
       "sourceUrl": "https://congbao.chinhphu.vn/van-ban/thong-tu-so-15-2026-tt-bgddt-469365.htm",
       "verified": true,
       "verifiedDate": "2026-10-09",
-      "effectiveStatus": "Có hiệu lực từ 10/05/2026"
+      "effectiveStatus": "Có hiệu lực từ 10/05/2026",
+      "article": null,
+      "citationLevel": "document_only",
+      "useCases": [
+        "Điều lệ trường phổ thông"
+      ],
+      "verificationNote": "Chỉ trích dẫn ở cấp văn bản; chưa xác minh điều khoản cụ thể."
     },
     {
       "id": "OTHER_PENDING",
@@ -42,8 +54,205 @@
           "content": "Điều 155 (Tội làm nhục người khác) và Điều 156 (Tội vu khống) áp dụng đối với các hành vi xúc phạm nghiêm trọng nhân phẩm, danh dự của người khác."
         }
       ]
+    },
+    {
+      "id": "LUAT_TRE_EM_2016",
+      "law": "Luật Trẻ em 2016",
+      "topic": "Quyền trẻ em, bảo vệ trẻ em",
+      "useCases": [
+        "Bị bạo hành, xâm hại, đe dọa; quyền được hỗ trợ và bảo vệ"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
+    },
+    {
+      "id": "ND56_2017",
+      "law": "Nghị định 56/2017/NĐ-CP",
+      "topic": "Bảo vệ trẻ em",
+      "useCases": [
+        "Tiếp nhận thông tin, hỗ trợ và can thiệp khi trẻ bị xâm hại"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
+    },
+    {
+      "id": "LUAT_AN_NINH_MANG_2025",
+      "law": "Luật An ninh mạng 2025",
+      "topic": "An toàn trên không gian mạng",
+      "useCases": [
+        "Đe dọa, xúc phạm, lan truyền nội dung gây hại qua mạng"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
+    },
+    {
+      "id": "ND147_2024",
+      "law": "Nghị định 147/2024/NĐ-CP",
+      "topic": "Internet và mạng xã hội",
+      "useCases": [
+        "Tài khoản mạng xã hội, nội dung và báo cáo vi phạm"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
+    },
+    {
+      "id": "ND15_2020",
+      "law": "Nghị định 15/2020/NĐ-CP và các sửa đổi",
+      "topic": "Xử phạt hành chính trên mạng",
+      "useCases": [
+        "Đăng tải thông tin sai sự thật, xúc phạm trên mạng"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
+    },
+    {
+      "id": "LUAT_BV_DLCN_2025",
+      "law": "Luật Bảo vệ dữ liệu cá nhân 2025",
+      "topic": "Dữ liệu cá nhân",
+      "useCases": [
+        "Bị công khai số điện thoại, địa chỉ, hình ảnh và dữ liệu riêng tư"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
+    },
+    {
+      "id": "ND356_2025",
+      "law": "Nghị định 356/2025/NĐ-CP",
+      "topic": "Bảo vệ dữ liệu cá nhân",
+      "useCases": [
+        "Quy định hướng dẫn bảo vệ dữ liệu cá nhân"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
+    },
+    {
+      "id": "LUAT_PCBLGD_2022",
+      "law": "Luật Phòng, chống bạo lực gia đình 2022",
+      "topic": "Bạo lực gia đình",
+      "useCases": [
+        "Bị người thân đánh, đe dọa, kiểm soát hoặc ngược đãi"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
+    },
+    {
+      "id": "ND76_2023",
+      "law": "Nghị định 76/2023/NĐ-CP",
+      "topic": "Phòng, chống bạo lực gia đình",
+      "useCases": [
+        "Biện pháp hỗ trợ, bảo vệ trong bạo lực gia đình"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
+    },
+    {
+      "id": "BLHS_2015",
+      "law": "Bộ luật Hình sự 2015 và các sửa đổi",
+      "topic": "Trách nhiệm hình sự",
+      "useCases": [
+        "Gây thương tích, đe dọa, làm nhục, vu khống, xâm hại tình dục"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
+    },
+    {
+      "id": "BLDS_2015",
+      "law": "Bộ luật Dân sự 2015",
+      "topic": "Quyền nhân thân và bồi thường",
+      "useCases": [
+        "Danh dự, nhân phẩm, sức khỏe, bồi thường thiệt hại"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
+    },
+    {
+      "id": "LUAT_XLVPHC",
+      "law": "Luật Xử lý vi phạm hành chính và các sửa đổi",
+      "topic": "Xử lý vi phạm theo độ tuổi",
+      "useCases": [
+        "Xác định điều kiện áp dụng xử phạt đối với người chưa thành niên"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
+    },
+    {
+      "id": "LUAT_TUPHAP_NCTN",
+      "law": "Luật Tư pháp người chưa thành niên",
+      "topic": "Tư pháp người chưa thành niên",
+      "useCases": [
+        "Quy trình xử lý khi người chưa thành niên liên quan vụ việc hình sự"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
+    },
+    {
+      "id": "TT18_2023",
+      "law": "Thông tư 18/2023/TT-BGDĐT",
+      "topic": "Trường học an toàn",
+      "useCases": [
+        "Kiểm tra nội dung và phạm vi áp dụng trước khi trích dẫn"
+      ],
+      "content": "Văn bản cần đối chiếu toàn văn, điều khoản, văn bản sửa đổi và hiệu lực trước khi viện dẫn.",
+      "sourceUrl": "https://vbpl.vn/",
+      "verified": false,
+      "article": null,
+      "effectiveStatus": "Chờ xác minh điều khoản và hiệu lực",
+      "verifiedDate": null
     }
   ],
-  "noteForBot": "Khi tư vấn, hãy giải thích nhẹ nhàng cho học sinh hiểu rằng hành vi công kích, xúc phạm người khác trên mạng (kể cả nặc danh) có thể vi phạm pháp luật tùy mức độ và nội dung cụ thể; lỗi thuộc về người thực hiện hành vi chứ không phải lỗi của nạn nhân. Không kết luận một người cụ thể là phạm tội và không nêu mức phạt nếu dữ liệu không có.",
-  "disclaimer": "Thông tin chỉ mang tính tham khảo chung, không phải tư vấn pháp lý. Các văn bản có thể đã được sửa đổi, thay thế; cần đối chiếu với nguồn chính thức trước khi sử dụng."
+  "noteForBot": "Chỉ dùng mục verified=true để trích dẫn tên văn bản và URL. Chỉ dẫn số điều khi article đã được đối chiếu chính thức. Không tự suy đoán trách nhiệm hình sự, mức phạt hay hình thức kỷ luật. Với tình huống nguy hiểm, hướng dẫn an toàn trước.",
+  "disclaimer": "Thông tin chỉ mang tính tham khảo chung, không phải tư vấn pháp lý. Các văn bản có thể đã được sửa đổi, thay thế; cần đối chiếu với nguồn chính thức trước khi sử dụng.",
+  "dataPolicy": "Các mục verified=false là danh mục nghiên cứu nội bộ, tuyệt đối không đưa vào nội dung pháp lý trả cho học sinh."
 }

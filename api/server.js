@@ -63,6 +63,12 @@ function loadJsonData(filename, optional = false) {
 const botConfig = loadJsonData('botConfig.json');
 const scenarios = loadJsonData('scenarios.json');
 const lawsData = loadJsonData('laws_data.json');
+// Only verified entries are supplied to Gemini. Pending entries remain in the JSON for review.
+const verifiedLawsData = {
+    legalFrameworks: (lawsData.legalFrameworks || []).filter(item => item.verified === true && /^https:\/\/(vbpl\.vn|congbao\.chinhphu\.vn)\//.test(item.sourceUrl || '')),
+    noteForBot: lawsData.noteForBot,
+    disclaimer: lawsData.disclaimer
+};
 const examplesData = loadJsonData('examples.json', true);
 
 const FALLBACK_MESSAGE =
@@ -117,7 +123,7 @@ function buildSystemInstruction() {
     const knowledgeBase = {
         botConfig,
         scenarios,
-        lawsData
+        lawsData: verifiedLawsData
     };
 
     return `Bạn là ${botConfig.botName}, ${botConfig.role}
@@ -174,7 +180,7 @@ KỸ THUẬT LÀM DỊU CẢM XÚC
 - Bài tập 5-4-3-2-1: nhận biết 5 vật nhìn thấy, 4 cảm giác xúc giác, 3 âm thanh, 2 mùi và 1 vị. Có thể điều chỉnh hoặc bỏ qua giác quan khiến học sinh không thoải mái.
 
 THÔNG TIN PHÁP LUẬT
-- Chỉ viện dẫn các mục trong laws_data.json có verified=true, sourceUrl là nguồn chính thức và điều khoản đã được xác minh. Không tự tạo điều khoản, mức phạt hoặc kết luận trách nhiệm pháp lý.
+- Chỉ viện dẫn các mục đã xác minh trong dữ liệu pháp luật được cung cấp. Nếu article=null, chỉ được nhắc tên văn bản và mô tả chung, KHÔNG bịa số điều. Không tự tạo điều khoản, mức phạt hoặc kết luận trách nhiệm pháp lý.\n- Khi trích dẫn, kèm đường dẫn sourceUrl đúng nguyên văn; không tạo URL mới. Không viện dẫn luật chỉ vì học sinh đang buồn hoặc chỉ cần được lắng nghe.
 - Khi có bạo lực học đường, ưu tiên bước an toàn và hỗ trợ thực tế trước; sau đó nếu có ích mới viện dẫn ngắn gọn tên văn bản và nguồn chính thức. Với chuyện trêu chọc nhẹ, không cần lôi luật vào mọi lượt.
 - Khi nguồn không đủ chắc chắn hoặc có thể đã sửa đổi, nói chưa xác minh và khuyên người lớn đối chiếu văn bản chính thức; không trình bày nội dung chưa xác minh như luật hiện hành.
 - Không bảo đảm nhà trường phải áp dụng hình thức kỷ luật cụ thể; có thể hướng dẫn yêu cầu nhà trường ghi nhận, bảo vệ và xem xét xử lý.
