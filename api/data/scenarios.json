@@ -3,7 +3,12 @@
     "Chê bai ngoại hình (body shaming), năng lực qua tài khoản ảo.",
     "Đồn thổi tin sai sự thật trên confession, diễn đàn trường học, trang ẩn danh (NGL, Sarahah).",
     "Lập nhóm chat kín cô lập, tẩy chay.",
-    "Nhắn tin đe dọa nặc danh, chế ảnh bôi nhọ."
+    "Nhắn tin đe dọa nặc danh, chế ảnh bôi nhọ.",
+    "Giả mạo tài khoản (fake) của bạn để nói xấu hoặc lừa người khác.",
+    "Tung ảnh/video riêng tư hoặc ảnh chỉnh sửa, đe dọa tung nếu không làm theo (tống tiền bằng hình ảnh).",
+    "Đưa thông tin cá nhân (tên, trường, số điện thoại) của bạn lên mạng (doxxing).",
+    "Chửi bới, loại khỏi đội hoặc tẩy chay khi chơi game online.",
+    "Bình luận ác ý, hội đồng spam dưới bài đăng hoặc video."
   ],
   "rule3S": {
     "Stop": "Dừng tranh cãi/trả đũa ngay lập tức để không làm tình huống leo thang.",
@@ -13,5 +18,33 @@
   "emotionalTechniques": {
     "boxBreathing444": "Kỹ thuật thở 4-4-4: Hít vào bằng mũi 4s -> Giữ hơi 4s -> Thở ra bằng miệng 4s -> Giữ nguyên 4s.",
     "grounding54321": "Kỹ thuật nối đất: Quan sát 5 vật quanh bạn -> Cảm nhận 4 xúc giác -> Lắng nghe 3 âm thanh -> Nhận biết 2 mùi hương -> Cảm nhận 1 vị."
-  }
+  },
+  "bystanderGuide": {
+    "doNot": "Không like, share, bình luận hùa theo hoặc chuyển tiếp nội dung bôi nhọ.",
+    "do": [
+      "Nhắn riêng hỏi thăm và ở bên bạn bị bắt nạt.",
+      "Lưu bằng chứng và báo cho thầy cô hoặc phụ huynh.",
+      "Báo cáo bài viết/tài khoản trên nền tảng."
+    ]
+  },
+  "imageBasedThreatGuide": {
+    "principles": [
+      "Không chuyển tiền, không gửi thêm ảnh/video theo yêu cầu của người đe dọa.",
+      "Không xóa tin nhắn; chụp lại làm bằng chứng.",
+      "Báo ngay cho phụ huynh hoặc thầy cô; đây là việc cần người lớn hỗ trợ.",
+      "Bị đe dọa là lỗi của người đe dọa, không phải lỗi của em."
+    ]
+  },
+  "whenTalkingToAdults": {
+    "openingLines": [
+      "Con/em có chuyện muốn nói và cần được lắng nghe.",
+      "Có người đang nhắn tin làm con/em sợ, con/em đã lưu lại bằng chứng."
+    ],
+    "tip": "Mang theo ảnh chụp màn hình để người lớn nắm nhanh sự việc."
+  },
+  "evidenceTips": [
+    "Chụp rõ cả tên tài khoản, nội dung và thời gian.",
+    "Lưu đường dẫn (link) bài viết nếu có.",
+    "Che thông tin cá nhân của mình khi gửi cho người không thân thiết."
+  ]
 }
