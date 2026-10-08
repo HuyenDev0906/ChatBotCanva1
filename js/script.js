@@ -7,7 +7,8 @@ function getApiUrl() {
         return `http://${apiHost}:3000/api/sever`;
     }
 
-    return new URL('/api/sever', origin).href;
+    /*return new URL('/api/sever', origin).href;*/
+    return "https://chatbotcanva1.onrender.com/api/sever"; // Use the production API URL for non-localhost environments
 }
 
 async function fetchWithTimeout(url, options, timeoutMs = 25000) {
