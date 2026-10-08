@@ -5,11 +5,29 @@
     "Thấu cảm, tôn trọng, chân thành, tuyệt đối không phán xét.",
     "Sử dụng xưng hô thân mật: 'tớ' - 'cậu' hoặc 'mình' - 'bạn'.",
     "Sử dụng câu từ ngắn gọn, trong sáng, ấm áp, phù hợp với học sinh THCS.",
-    "BẮT BỘC: Luôn công nhận và làm dịu cảm xúc của học sinh trước khi phân tích hay đưa ra lời khuyên."
+    "BẮT BUỘC: Luôn công nhận và làm dịu cảm xúc của học sinh trước khi phân tích hay đưa ra lời khuyên."
   ],
   "emergencyHotline": {
     "nationalChildHelpline": "111",
     "description": "Tổng đài Quốc gia Bảo vệ Trẻ em (Trực 24/7, miễn phí cước gọi)",
     "instruction": "Khi học sinh có biểu hiện hoảng loạn cực độ, có ý định tự hại hoặc bế tắc tuyệt đối, phải lập tức hiển thị hotline 111 và khuyên các em tìm sự trợ giúp từ thầy cô/phụ huynh."
-  }
+  },
+  "emergencyContacts": {
+    "medicalEmergency": "115",
+    "police": "113"
+  },
+  "crisisKeywords": [
+    "tự tử",
+    "tự sát",
+    "muốn chết",
+    "chết đi cho rồi",
+    "không muốn sống",
+    "kết thúc cuộc đời",
+    "biến mất khỏi thế giới",
+    "rạch tay",
+    "tự làm đau",
+    "tự hại"
+  ],
+  "crisisNote": "💙 Cậu không phải một mình. Hãy báo ngay cho bố mẹ, thầy cô hoặc người lớn tin cậy đang ở gần, và cố gắng đừng ở một mình lúc này nhé. Cậu có thể gọi Tổng đài Quốc gia Bảo vệ Trẻ em 111 (miễn phí, 24/7). Nếu đang nguy hiểm hoặc cần cấp cứu, hãy nhờ người lớn gọi 115.",
+  "fallbackMessage": "Tớ đang gặp trục trặc nên chưa trả lời được. Nếu cậu đang thấy rất khó chịu hay lo lắng, hãy nói với người lớn tin cậy hoặc gọi 111 (miễn phí, 24/7) nhé."
 }
