@@ -340,14 +340,9 @@ async function callGemini(message, apiKey, history) {
         contents: buildContents(message, history),
 
         generationConfig: {
-            // Gemini 2.5 dùng thinkingBudget (thinkingLevel là của dòng Gemini 3).
-            // Đặt 0 để token suy nghĩ không chiếm chỗ của câu trả lời.
-            thinkingConfig: {
-                thinkingBudget: 0
-            },
-            maxOutputTokens: 1024,
+            maxOutputTokens: 2048,
             temperature: 0.7
-        },
+},
 
         // Học sinh có thể kể về nội dung bắt nạt/tự hại; chỉ chặn mức rất cao
         // để bot không im lặng đúng lúc các em cần giúp đỡ.
