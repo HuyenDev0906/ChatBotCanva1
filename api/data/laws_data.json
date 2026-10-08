@@ -1,0 +1,49 @@
+{
+  "legalFrameworks": [
+    {
+      "id": "ND80_2017",
+      "law": "Nghị định 80/2017/NĐ-CP",
+      "topic": "Phòng, chống bạo lực học đường",
+      "content": "Quy định về môi trường giáo dục an toàn và phòng, chống bạo lực học đường; cơ sở giáo dục có trách nhiệm có biện pháp hỗ trợ, xử lý khi xảy ra bạo lực học đường. Không mặc định một hình thức kỷ luật cụ thể.",
+      "sourceUrl": "https://vbpl.vn/hanoi/Pages/vbpq-toanvan.aspx?ItemID=128348",
+      "verified": true,
+      "verifiedDate": "2026-10-09",
+      "effectiveStatus": "Cơ sở dữ liệu VBPL ghi còn hiệu lực; cần kiểm tra cập nhật khi triển khai"
+    },
+    {
+      "id": "TT15_2026",
+      "law": "Thông tư 15/2026/TT-BGDĐT",
+      "topic": "Điều lệ trường phổ thông",
+      "content": "Ban hành điều lệ trường tiểu học, THCS, THPT và trường phổ thông nhiều cấp học; có hiệu lực từ 10/05/2026 và thay thế Thông tư 32/2020/TT-BGDĐT. Chưa trích dẫn điều khoản cụ thể về kỷ luật khi chưa đối chiếu nội dung.",
+      "sourceUrl": "https://congbao.chinhphu.vn/van-ban/thong-tu-so-15-2026-tt-bgddt-469365.htm",
+      "verified": true,
+      "verifiedDate": "2026-10-09",
+      "effectiveStatus": "Có hiệu lực từ 10/05/2026"
+    },
+    {
+      "id": "OTHER_PENDING",
+      "law": "Các văn bản về an ninh mạng, hành chính và hình sự trong dữ liệu cũ",
+      "topic": "Bắt nạt trực tuyến",
+      "content": "Chưa kiểm chứng điều khoản và hiệu lực cập nhật trong lần rà soát này; không viện dẫn cụ thể cho học sinh cho tới khi kiểm tra.",
+      "verified": false,
+      "sourceUrl": null,
+      "effectiveStatus": "Chờ rà soát",
+      "originalEntries": [
+        {
+          "law": "Nghị định 15/2020/NĐ-CP (Điều 101)",
+          "content": "Quy định xử phạt vi phạm hành chính đối với hành vi vu khống, cung cấp thông tin sai sự thật, xúc phạm danh dự, uy tín, nhân phẩm của cá nhân trên mạng xã hội."
+        },
+        {
+          "law": "Luật An ninh mạng 2018 (Điều 8 & Điều 16)",
+          "content": "Nghiêm cấm việc sử dụng không gian mạng để đưa thông tin bịa đặt, sai sự thật, làm nhục hoặc xúc phạm danh dự của người khác."
+        },
+        {
+          "law": "Bộ luật Hình sự 2015 (Sửa đổi 2017)",
+          "content": "Điều 155 (Tội làm nhục người khác) và Điều 156 (Tội vu khống) áp dụng đối với các hành vi xúc phạm nghiêm trọng nhân phẩm, danh dự của người khác."
+        }
+      ]
+    }
+  ],
+  "noteForBot": "Khi tư vấn, hãy giải thích nhẹ nhàng cho học sinh hiểu rằng hành vi công kích, xúc phạm người khác trên mạng (kể cả nặc danh) có thể vi phạm pháp luật tùy mức độ và nội dung cụ thể; lỗi thuộc về người thực hiện hành vi chứ không phải lỗi của nạn nhân. Không kết luận một người cụ thể là phạm tội và không nêu mức phạt nếu dữ liệu không có.",
+  "disclaimer": "Thông tin chỉ mang tính tham khảo chung, không phải tư vấn pháp lý. Các văn bản có thể đã được sửa đổi, thay thế; cần đối chiếu với nguồn chính thức trước khi sử dụng."
+}
