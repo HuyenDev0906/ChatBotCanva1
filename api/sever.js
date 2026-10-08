@@ -93,7 +93,7 @@ function readRequestBody(req) {
 // =========================
 
 async function callGemini(message, apiKey) {
-    const modelName = 'gemini-3.5-flash-lite';
+    const modelName = 'gemini-2.5-flash';
 
     const url =
         `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent`;
@@ -416,7 +416,7 @@ if (require.main === module) {
         );
 
         console.log(
-            `Model: gemini-3.8-flash`
+            `Model: gemini-2.5-flash`
         );
     });
 }
