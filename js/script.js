@@ -7,8 +7,7 @@ function getApiUrl() {
         return `http://${apiHost}:3000/api/sever`;
     }
 
-    /*return new URL('/api/sever', origin).href;*/
-    return "https://chatbotcanva1.onrender.com/api/sever"; // Use the production API URL for non-localhost environments
+    return new URL('/api/sever', origin).href;
 }
 
 async function fetchWithTimeout(url, options, timeoutMs = 25000) {
@@ -24,6 +23,8 @@ async function fetchWithTimeout(url, options, timeoutMs = 25000) {
         clearTimeout(timeoutId);
     }
 }
+
+const conversationHistory = [];
 
 async function sendMessage() {
     const inputEl = document.getElementById('userInput');
@@ -49,7 +50,7 @@ async function sendMessage() {
         const response = await fetchWithTimeout(getApiUrl(), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text })
+            body: JSON.stringify({ message: text, history: conversationHistory.slice(-10) })
         }, 25000);
 
         let data = {};
@@ -81,6 +82,8 @@ async function sendMessage() {
         }
 
         loadingMessage.textContent = reply;
+        conversationHistory.push({ role: 'user', text }, { role: 'model', text: reply });
+        if (conversationHistory.length > 10) conversationHistory.splice(0, conversationHistory.length - 10);
     } catch (error) {
         loadingMessage.textContent = error.message || 'Lỗi kết nối server. Vui lòng thử lại.';
     }
@@ -117,7 +120,7 @@ function setInitialChat() {
         return;
     }
 
-    chatBox.innerHTML = '<div class="msg bot-msg">Xin chào! Mình là ChatBot AI. Bạn muốn hỏi gì nào?</div>';
+    chatBox.innerHTML = '<div class="msg bot-msg">Chào cậu, tớ là Lá Chắn Xanh AI. Cậu muốn chia sẻ chuyện gì hôm nay?</div>';
 }
 
 function hideOutsideBadge() {
@@ -181,10 +184,11 @@ function minimizeChatPanel() {
 }
 
 function resetChatHistory() {
+    conversationHistory.length = 0;
     const chatBox = document.getElementById('chatBox');
     if (!chatBox) return;
 
-    chatBox.innerHTML = '<div class="msg bot-msg">Xin chào! Mình là ChatBot AI. Bạn muốn hỏi gì nào?</div>';
+    chatBox.innerHTML = '<div class="msg bot-msg">Chào cậu, tớ là Lá Chắn Xanh AI. Cậu muốn chia sẻ chuyện gì hôm nay?</div>';
     chatBox.scrollTop = 0;
 }
 
