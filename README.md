@@ -10,9 +10,6 @@
 [![Backend](https://img.shields.io/badge/Backend-Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![AI](https://img.shields.io/badge/AI-Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white)](https://ai.google.dev/)
 [![Hosting](https://img.shields.io/badge/Hosting-GitHub%20Pages%20%2B%20Render-111827?style=for-the-badge)](https://pages.github.com/)
-
-🌐 **Website:** [chuyencuaminh.io.vn](https://chuyencuaminh.io.vn)  
-
 **Status:** Prototype / Active Development
 
 </div>
@@ -31,7 +28,7 @@ This repository documents the **software implementation**: web interface, AI int
 |---|---|---|
 | **HTML5** | Page structure and chatbot markup | Lightweight, broadly supported, and well suited to static hosting. |
 | **CSS3** | Responsive layout, animations, and floating chat interface | Fine-grained visual control without a heavy UI framework. |
-| **Vanilla JavaScript** | User interactions, presentation controls, and API requests | Minimal dependencies, fast iteration, and straightforward deployment for a prototype. |
+| **JavaScript** | User interactions, presentation controls, and API requests | Minimal dependencies, fast iteration, and straightforward deployment for a prototype. |
 | **Canva** | Visual presentation and design assets | Helps produce educational visuals quickly and export assets for the website. |
 | **Node.js** | Backend HTTP server | Enables JavaScript across the stack and simple integration with external AI APIs. |
 | **Google Gemini API** | AI-generated chatbot responses | Supports natural-language conversations and application-specific behavior through prompts. |
@@ -57,7 +54,6 @@ For the current scope, a framework such as React would introduce additional tool
 > Never place `GEMINI_API_KEY` in HTML, public JavaScript, `js/config.js`, or a Git commit. Keep it in the backend environment only.
 
 ## 🏗️ System Architecture
-
 ```mermaid
 flowchart TD
     U[Student / Browser] --> F[Frontend: HTML + CSS + JavaScript]
