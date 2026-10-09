@@ -1,13 +1,10 @@
 function getApiUrl() {
-    const { protocol, hostname, origin } = window.location;
-    const isLocalHost = ['localhost', '127.0.0.1', '[::1]'].includes(hostname);
-
-    if (protocol === 'file:' || isLocalHost) {
-        const apiHost = hostname === '127.0.0.1' ? hostname : 'localhost';
-        return `http://${apiHost}:3000/api/sever`;
-    }
-
-    return new URL('/api/sever', origin).href;
+    const config = window.SITE_CONFIG || {};
+    const base = (config.apiBaseUrl || '').trim().replace(/\/$/, '');
+    const path = config.apiPath || '/api/sever';
+    if (base) return base + path;
+    if (['localhost','127.0.0.1','[::1]'].includes(window.location.hostname) || window.location.protocol === 'file:') return 'http://localhost:3000/api/sever';
+    throw new Error('Chưa cấu hình URL Render API trong js/config.js');
 }
 
 async function fetchWithTimeout(url, options, timeoutMs = 25000) {
@@ -23,8 +20,6 @@ async function fetchWithTimeout(url, options, timeoutMs = 25000) {
         clearTimeout(timeoutId);
     }
 }
-
-const conversationHistory = [];
 
 async function sendMessage() {
     const inputEl = document.getElementById('userInput');
@@ -50,7 +45,7 @@ async function sendMessage() {
         const response = await fetchWithTimeout(getApiUrl(), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text, history: conversationHistory.slice(-10) })
+            body: JSON.stringify({ message: text })
         }, 25000);
 
         let data = {};
@@ -82,8 +77,6 @@ async function sendMessage() {
         }
 
         loadingMessage.textContent = reply;
-        conversationHistory.push({ role: 'user', text }, { role: 'model', text: reply });
-        if (conversationHistory.length > 10) conversationHistory.splice(0, conversationHistory.length - 10);
     } catch (error) {
         loadingMessage.textContent = error.message || 'Lỗi kết nối server. Vui lòng thử lại.';
     }
@@ -120,7 +113,7 @@ function setInitialChat() {
         return;
     }
 
-    chatBox.innerHTML = '<div class="msg bot-msg">Chào cậu, tớ là Lá Chắn Xanh AI. Cậu muốn chia sẻ chuyện gì hôm nay?</div>';
+    chatBox.innerHTML = '<div class="msg bot-msg">Xin chào! Mình là ChatBot AI. Bạn muốn hỏi gì nào?</div>';
 }
 
 function hideOutsideBadge() {
@@ -184,11 +177,10 @@ function minimizeChatPanel() {
 }
 
 function resetChatHistory() {
-    conversationHistory.length = 0;
     const chatBox = document.getElementById('chatBox');
     if (!chatBox) return;
 
-    chatBox.innerHTML = '<div class="msg bot-msg">Chào cậu, tớ là Lá Chắn Xanh AI. Cậu muốn chia sẻ chuyện gì hôm nay?</div>';
+    chatBox.innerHTML = '<div class="msg bot-msg">Xin chào! Mình là ChatBot AI. Bạn muốn hỏi gì nào?</div>';
     chatBox.scrollTop = 0;
 }
 
@@ -225,43 +217,4 @@ if (chatWidget && chatClose) {
 if (chatWidget) {
     chatWidget.classList.remove('minimized');
     updateChatNotification();
-}
-
-const canvaFrame = document.getElementById('canvaFrame');
-const canvaFallback = document.getElementById('canvaFallback');
-
-if (canvaFrame && canvaFallback) {
-    const hideFallback = function () {
-        canvaFallback.hidden = true;
-        canvaFallback.style.display = 'none';
-        canvaFrame.style.display = 'block';
-    };
-
-    const showFallback = function () {
-        canvaFrame.style.display = 'none';
-        canvaFallback.hidden = false;
-        canvaFallback.style.display = 'flex';
-    };
-
-    hideFallback();
-
-    canvaFrame.addEventListener('load', hideFallback);
-    canvaFrame.addEventListener('error', showFallback);
-
-    setTimeout(function () {
-        try {
-            const iframeDoc = canvaFrame.contentDocument || canvaFrame.contentWindow.document;
-            if (iframeDoc && iframeDoc.body && iframeDoc.body.innerHTML.trim().length > 0) {
-                hideFallback();
-                return;
-            }
-        } catch (error) {
-            // Cross-origin access is blocked intentionally by the browser, but the iframe can still render correctly.
-        }
-
-        if (canvaFrame && canvaFrame.getAttribute('src')) {
-            // Keep iframe visible unless an actual network error is reported.
-            hideFallback();
-        }
-    }, 1000);
 }
