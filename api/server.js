@@ -729,8 +729,8 @@ const server = http.createServer(
 
         const url = parse(req.url, true);
 
-        // API (chấp nhận cả /api/sever )
-        if (url.pathname === '/api/server') {
+        // Nhận route chuẩn và route cũ có typo để tránh request rơi vào static handler.
+        if (url.pathname === '/api/server' || url.pathname === '/api/sever') {
             await handleApi(req, res);
             return;
         }
@@ -750,7 +750,7 @@ if (require.main === module) {
 
     server.listen(port, () => {
         console.log(`Server đang chạy tại http://localhost:${port}`);
-        console.log('Gemini API: /api/sever');
+        console.log('Gemini API: /api/server');
         console.log(`Model: ${MODEL_NAME}`);
     });
 }

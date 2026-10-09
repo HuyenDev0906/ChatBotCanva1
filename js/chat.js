@@ -1,9 +1,9 @@
 function getApiUrl() {
     const config = window.SITE_CONFIG || {};
     const base = (config.apiBaseUrl || '').trim().replace(/\/$/, '');
-    const path = config.apiPath || '/api/sever';
+    const path = config.apiPath || '/api/server';
     if (base) return base + path;
-    if (['localhost','127.0.0.1','[::1]'].includes(window.location.hostname) || window.location.protocol === 'file:') return 'http://localhost:3000/api/sever';
+    if (['localhost','127.0.0.1','[::1]'].includes(window.location.hostname) || window.location.protocol === 'file:') return 'http://localhost:3000/api/server';
     throw new Error('Chưa cấu hình URL Render API trong js/config.js');
 }
 
