@@ -321,6 +321,20 @@ body {
     background: linear-gradient(180deg, #f8faff, #f2f5fb);
 }
 
+.bot-response {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    position: relative;
+    width: fit-content;
+    max-width: 78%;
+}
+
+.bot-response .msg.bot-msg {
+    width: fit-content;
+    max-width: 100%;
+}
+
 .msg {
     padding: 10px 14px;
     border-radius: 18px;
@@ -429,6 +443,187 @@ body {
     background: #0e0f12;
 }
 
+.chat-widget.open .chat-toggle {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(0.8);
+}
+
+.chat-container {
+    background: #ffffff;
+    border: 1px solid #dbe3ef;
+    color: #1f2937;
+}
+
+.chat-input-area input {
+    color: #1f2937;
+}
+
+.chat-input-area input::placeholder {
+    color: #64748b;
+}
+
+.chat-reactions {
+    display: none;
+    position: absolute;
+    right: auto;
+    left: 0;
+    bottom: -46px;
+    gap: 3px;
+    padding: 3px;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.18);
+    z-index: 5;
+}
+
+.bot-response:hover .chat-reactions:not(.is-dismissed),
+.bot-response:focus-within .chat-reactions:not(.is-dismissed),
+.chat-reactions:not(.is-dismissed):hover,
+.chat-reactions:not(.is-dismissed):focus-within,
+.chat-reactions.is-visible {
+    display: flex;
+}
+
+.chat-reactions.is-dismissed:not(.is-visible) {
+    display: none;
+}
+
+.chat-reaction {
+    display: inline-grid;
+    flex: 0 0 26px;
+    width: 26px;
+    height: 26px;
+    place-items: center;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: transparent;
+    color: #334155;
+    font-size: 1.08rem;
+    line-height: 1;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.chat-reaction:hover {
+    background: #f1f5f9;
+    transform: scale(1.16);
+}
+
+.chat-reaction.selected {
+    background: #dbeafe;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px #3b82f633;
+}
+
+.chat-reaction:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+.chat-reaction-more {
+    font-size: 1.45rem;
+    font-weight: 500;
+}
+
+.chat-reaction-more-list {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 8px);
+    flex-wrap: wrap;
+    width: 148px;
+    gap: 4px;
+    padding: 6px;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.2);
+}
+
+.chat-reactions.expanded .chat-reaction-more-list {
+    display: flex;
+}
+
+.chat-reaction-summary {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: -12px;
+    gap: 8px;
+}
+
+.chat-reaction-summary:not([hidden]) {
+    display: flex;
+    align-items: center;
+}
+
+.bot-response.has-reaction {
+    margin-bottom: 18px;
+}
+
+.bot-response:hover:not(.has-reaction),
+.bot-response:focus-within:not(.has-reaction),
+.bot-response.show-reactions:not(.has-reaction) {
+    margin-bottom: 50px;
+}
+
+.chat-reaction-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    min-height: 24px;
+    padding: 2px 5px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: #64748b;
+    font-size: 0.95rem;
+    box-shadow: none;
+}
+
+.chat-reaction-count-emoji {
+    font-size: 1.06rem;
+    line-height: 1;
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.65);
+}
+
+.chat-reaction-count {
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.chat-reaction-count:hover {
+    background: rgba(226, 232, 240, 0.35);
+    border-color: #94a3b8;
+}
+
+.chat-reaction-count:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+@media (max-width: 400px) {
+    .chat-reactions {
+        gap: 2px;
+        padding: 2px;
+    }
+
+    .chat-reaction {
+        flex-basis: 24px;
+        width: 24px;
+        height: 24px;
+        font-size: 1rem;
+    }
+
+    .chat-reaction-more {
+        font-size: 1.25rem;
+    }
+}
+
 .chat-widget {
     top: auto;
     bottom: max(18px, env(safe-area-inset-bottom));
@@ -440,5 +635,6 @@ body {
         bottom: max(12px, env(safe-area-inset-bottom));
         right: max(12px, env(safe-area-inset-right));
     }
+
 }
 
