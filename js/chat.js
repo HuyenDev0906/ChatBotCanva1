@@ -7,6 +7,8 @@ function getApiUrl() {
     throw new Error('Chưa cấu hình URL Render API trong js/config.js');
 }
 
+let chatRequestInProgress = false;
+
 async function fetchWithTimeout(url, options, timeoutMs = 25000) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -24,9 +26,14 @@ async function fetchWithTimeout(url, options, timeoutMs = 25000) {
 async function sendMessage() {
     const inputEl = document.getElementById('userInput');
     const chatBox = document.getElementById('chatBox');
+    const sendButton = document.querySelector('.chat-input-area button');
     const text = inputEl.value.trim();
 
-    if (!text) return;
+    if (!text || chatRequestInProgress) return;
+
+    chatRequestInProgress = true;
+    if (sendButton) sendButton.disabled = true;
+    inputEl.disabled = true;
 
     const userMessage = document.createElement('div');
     userMessage.className = 'msg user-msg';
@@ -89,9 +96,17 @@ async function sendMessage() {
 
         loadingMessage.classList.add('error-msg');
         loadingMessage.setAttribute('role', 'alert');
-        loadingMessage.textContent = [401, 403, 405].includes(error.status)
-            ? 'Access was denied. Please contact the administrator or Ms. Huyen.'
-            : 'The assistant is temporarily unavailable. Please try again later.';
+        if ([401, 403, 405].includes(error.status)) {
+            loadingMessage.textContent = 'Access was denied. Please contact the administrator or Ms. Huyen.';
+        } else if (error.status === 429) {
+            loadingMessage.textContent = 'Too many requests. Please wait a moment before trying again.';
+        } else {
+            loadingMessage.textContent = 'The assistant is temporarily unavailable. Please try again later.';
+        }
+    } finally {
+        chatRequestInProgress = false;
+        inputEl.disabled = false;
+        if (sendButton) sendButton.disabled = false;
     }
 
     if (!loadingMessage.classList.contains('error-msg')) {

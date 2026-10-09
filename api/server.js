@@ -17,6 +17,7 @@ const MAX_HISTORY_ITEMS = 10;
 const MAX_HISTORY_CHARS = 1000;
 const RATE_LIMIT_MAX = 20;               // requests
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;  // per minute per IP
+const MAX_CONCURRENT_REQUESTS_PER_IP = 5;
 const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || '*';
 
 // =========================
@@ -226,12 +227,18 @@ function sendJson(res, statusCode, payload) {
 // =========================
 
 const rateBuckets = new Map();
+const activeRequests = new Map();
 
 function getClientIp(req) {
     const forwarded = req.headers['x-forwarded-for'];
 
     if (forwarded) {
-        return String(forwarded).split(',')[0].trim();
+        // The hosting proxy appends the observed client IP to this chain.
+        // Use the last entry so clients cannot evade limits by prepending a forged IP.
+        const chain = String(forwarded).split(',').map(value => value.trim()).filter(Boolean);
+        if (chain.length > 0) {
+            return chain[chain.length - 1];
+        }
     }
 
     return req.socket.remoteAddress || 'unknown';
@@ -541,6 +548,17 @@ async function handleApi(req, res) {
         return;
     }
 
+    const clientIp = getClientIp(req);
+    const activeForClient = activeRequests.get(clientIp) || 0;
+    if (activeForClient >= MAX_CONCURRENT_REQUESTS_PER_IP) {
+        res.setHeader('Retry-After', '2');
+        sendJson(res, 429, {
+            error: 'Quá nhiều yêu cầu đang xử lý. Vui lòng đợi một chút rồi thử lại.'
+        });
+        return;
+    }
+    activeRequests.set(clientIp, activeForClient + 1);
+
     try {
 
         const body = await readRequestBody(req);
@@ -624,6 +642,13 @@ async function handleApi(req, res) {
                     ? error.message
                     : 'Lỗi hệ thống: ' + (error.message || 'Unknown error')
         });
+    } finally {
+        const remaining = (activeRequests.get(clientIp) || 1) - 1;
+        if (remaining > 0) {
+            activeRequests.set(clientIp, remaining);
+        } else {
+            activeRequests.delete(clientIp);
+        }
     }
 }
 
