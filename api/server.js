@@ -429,13 +429,15 @@ async function callGemini(message, apiKey, history) {
                 JSON.stringify(data?.error || data, null, 2)
             );
 
+            const accessDenied = response.status === 401 || response.status === 403;
+
             return {
                 ok: false,
-                statusCode: response.status,
+                statusCode: accessDenied ? 403 : response.status,
                 body: {
-                    error:
-                        data?.error?.message ||
-                        'Gemini API request failed.'
+                    error: accessDenied
+                        ? 'Access was denied. Please contact the administrator or Ms. Huyen.'
+                        : 'The assistant service is temporarily unavailable.'
                 }
             };
         }
@@ -702,8 +704,8 @@ const server = http.createServer(
 
         const url = parse(req.url, true);
 
-        // API (chấp nhận cả /api/sever lẫn /api/server)
-        if (url.pathname === '/api/sever' || url.pathname === '/api/server') {
+        // API (chấp nhận cả /api/sever )
+        if (url.pathname === '/api/server') {
             await handleApi(req, res);
             return;
         }

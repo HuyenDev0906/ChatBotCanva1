@@ -31,8 +31,13 @@
 <div class="chat-messages" id="chatBox">
 <div class="msg bot-msg">Chào cậu! 🌿 Hôm nay của cậu thế nào? Có gì muốn tâm sự với tớ không?</div>
 </div>
+<button aria-label="Cuộn xuống tin nhắn mới nhất" class="chat-scroll-down" hidden id="chatScrollDown" type="button">
+<svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+<path d="M12 4v15m-6-6 6 6 6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+</svg>
+</button>
 <div class="chat-input-area">
-<input id="userInput" placeholder="Hỏi AI bất cứ điều gì..." type="text"/>
+<input id="userInput" placeholder="Hỏi tớ bất cứ điều gì..." type="text"/>
 <button onclick="sendMessage()" type="button">Gửi</button>
 </div>
 </div>

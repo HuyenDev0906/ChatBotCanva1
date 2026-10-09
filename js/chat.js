@@ -34,12 +34,14 @@ async function sendMessage() {
     chatBox.appendChild(userMessage);
     inputEl.value = '';
     chatBox.scrollTop = chatBox.scrollHeight;
+    updateChatScrollButton();
 
     const loadingMessage = document.createElement('div');
     loadingMessage.className = 'msg bot-msg';
     loadingMessage.textContent = 'AI đang suy nghĩ...';
     chatBox.appendChild(loadingMessage);
     chatBox.scrollTop = chatBox.scrollHeight;
+    updateChatScrollButton();
 
     try {
         const response = await fetchWithTimeout(getApiUrl(), {
@@ -61,7 +63,9 @@ async function sendMessage() {
         }
 
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${(data && data.error) || 'Lỗi máy chủ'}`);
+            const requestError = new Error((data && data.error) || 'Chat API request failed.');
+            requestError.status = response.status;
+            throw requestError;
         }
 
         var reply = data && data.reply ? data.reply : '';
@@ -78,11 +82,23 @@ async function sendMessage() {
 
         loadingMessage.textContent = reply;
     } catch (error) {
-        loadingMessage.textContent = error.message || 'Lỗi kết nối server. Vui lòng thử lại.';
+        console.error('[Chat] Request failed:', {
+            status: error.status || null,
+            message: error.message || 'Unknown request error'
+        });
+
+        loadingMessage.classList.add('error-msg');
+        loadingMessage.setAttribute('role', 'alert');
+        loadingMessage.textContent = [401, 403, 405].includes(error.status)
+            ? 'Access was denied. Please contact the administrator or Ms. Huyen.'
+            : 'The assistant is temporarily unavailable. Please try again later.';
     }
 
-    addReactionControls(loadingMessage);
+    if (!loadingMessage.classList.contains('error-msg')) {
+        addReactionControls(loadingMessage);
+    }
     chatBox.scrollTop = chatBox.scrollHeight;
+    updateChatScrollButton();
     if (chatWidget && !chatWidget.classList.contains('open')) {
         unreadReplies += 1;
         showOutsideBadge();
@@ -105,8 +121,28 @@ const chatClose = document.getElementById('chatClose');
 const chatMinimize = document.getElementById('chatMinimize');
 const chatNotification = document.getElementById('chatNotification');
 const chatOutsideBadge = document.getElementById('chatOutsideBadge');
+const chatMessages = document.getElementById('chatBox');
+const chatScrollDown = document.getElementById('chatScrollDown');
 let unreadReplies = 0;
 let outsideBadgeTimeout = null;
+
+function updateChatScrollButton() {
+    if (!chatMessages || !chatScrollDown) return;
+
+    const distanceFromBottom = chatMessages.scrollHeight - chatMessages.scrollTop - chatMessages.clientHeight;
+    chatScrollDown.hidden = distanceFromBottom <= 32;
+}
+
+if (chatMessages) {
+    chatMessages.addEventListener('scroll', updateChatScrollButton, { passive: true });
+}
+
+if (chatScrollDown && chatMessages) {
+    chatScrollDown.addEventListener('click', function () {
+        chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: 'smooth' });
+    });
+    updateChatScrollButton();
+}
 
 function setInitialChat() {
     const chatBox = document.getElementById('chatBox');
@@ -183,6 +219,7 @@ function resetChatHistory() {
 
     chatBox.innerHTML = '<div class="msg bot-msg">Xin chào! Mình là ChatBot AI. Bạn muốn hỏi gì nào?</div>';
     chatBox.scrollTop = 0;
+    updateChatScrollButton();
 }
 
 function addReactionControls(messageElement) {
@@ -270,7 +307,6 @@ function addReactionControls(messageElement) {
     response.append(reactions, summary);
 }
 
-const chatMessages = document.getElementById('chatBox');
 if (chatMessages) {
     chatMessages.querySelectorAll('.bot-msg').forEach(function (message, index) {
         if (index > 0) addReactionControls(message);
