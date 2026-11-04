@@ -370,6 +370,41 @@ body {
     box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
 }
 
+.msg.bot-msg.typing {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 40px;
+    color: #64748b;
+}
+
+.typing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: chat-typing-bounce 1s ease-in-out infinite;
+}
+
+.typing-dot:nth-of-type(2) {
+    animation-delay: 150ms;
+}
+
+.typing-dot:nth-of-type(3) {
+    animation-delay: 300ms;
+}
+
+@keyframes chat-typing-bounce {
+    0%, 60%, 100% {
+        opacity: 0.35;
+        transform: translateY(0);
+    }
+    30% {
+        opacity: 1;
+        transform: translateY(-4px);
+    }
+}
+
 .msg.bot-msg.streaming::after {
     content: "";
     display: inline-block;

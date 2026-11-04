@@ -8,6 +8,10 @@ function getApiUrl() {
 }
 
 let chatRequestInProgress = false;
+const STREAM_TARGET_MS_PER_GRAPHEME = 30;
+const chatGraphemeSegmenter = typeof Intl.Segmenter === 'function'
+    ? new Intl.Segmenter(undefined, { granularity: 'grapheme' })
+    : null;
 
 function renderBotMessage(messageElement, text) {
     const fragment = document.createDocumentFragment();
@@ -28,11 +32,16 @@ function renderBotMessage(messageElement, text) {
 }
 
 function createStreamingBotRenderer(messageElement, chatBox) {
-    let queuedText = '';
-    let pendingText = '';
+    let queue = [];
+    let queueIndex = 0;
+    let segmentationBuffer = '';
     let currentTextNode = null;
     let boldElement = null;
+    let pendingAsterisk = false;
     let started = false;
+    let animationFrameId = null;
+    let previousFrameTime = null;
+    let elapsedSinceCharacter = STREAM_TARGET_MS_PER_GRAPHEME;
 
     function appendText(text) {
         if (!text) return;
@@ -45,70 +54,157 @@ function createStreamingBotRenderer(messageElement, chatBox) {
         currentTextNode.appendData(text);
     }
 
-    function flush() {
-        if (!started && queuedText) {
-            messageElement.replaceChildren();
-            messageElement.classList.add('streaming');
-            started = true;
-        }
-
-        pendingText += queuedText;
-        queuedText = '';
-
-        while (pendingText) {
-            const markerIndex = pendingText.indexOf('**');
-            if (markerIndex === -1) {
-                const keepTrailingStar = pendingText.endsWith('*');
-                const safeLength = pendingText.length - (keepTrailingStar ? 1 : 0);
-                appendText(pendingText.slice(0, safeLength));
-                pendingText = keepTrailingStar ? '*' : '';
-                break;
-            }
-
-            appendText(pendingText.slice(0, markerIndex));
-            pendingText = pendingText.slice(markerIndex + 2);
-
-            if (boldElement) {
-                boldElement = null;
+    function renderGrapheme(grapheme) {
+        if (grapheme === '*') {
+            if (pendingAsterisk) {
+                pendingAsterisk = false;
+                if (boldElement) {
+                    boldElement = null;
+                } else {
+                    boldElement = document.createElement('strong');
+                    messageElement.appendChild(boldElement);
+                }
+                currentTextNode = null;
             } else {
-                boldElement = document.createElement('strong');
-                messageElement.appendChild(boldElement);
+                pendingAsterisk = true;
             }
-            currentTextNode = null;
+            return false;
         }
 
-        if (started) {
+        if (pendingAsterisk) {
+            appendText('*');
+            pendingAsterisk = false;
+        }
+        appendText(grapheme);
+        return true;
+    }
+
+    function pendingCount() {
+        return queue.length - queueIndex;
+    }
+
+    function compactQueue() {
+        if (queueIndex > 128 && queueIndex * 2 >= queue.length) {
+            queue = queue.slice(queueIndex);
+            queueIndex = 0;
+        }
+    }
+
+    function ensureStarted() {
+        if (started || pendingCount() === 0) return;
+        messageElement.replaceChildren();
+        messageElement.classList.remove('typing');
+        messageElement.classList.add('streaming');
+        started = true;
+    }
+
+    function renderFrame(timestamp) {
+        animationFrameId = null;
+        ensureStarted();
+
+        if (previousFrameTime !== null) {
+            elapsedSinceCharacter += Math.min(timestamp - previousFrameTime, 50);
+        }
+        previousFrameTime = timestamp;
+
+        const backlog = pendingCount();
+        const interval = backlog > 240
+            ? 1
+            : backlog > 80
+                ? 4
+                : STREAM_TARGET_MS_PER_GRAPHEME;
+        const due = Math.max(1, Math.floor(elapsedSinceCharacter / interval));
+        const count = Math.min(backlog, due);
+        let changed = false;
+
+        for (let index = 0; index < count; index += 1) {
+            changed = renderGrapheme(queue[queueIndex++]) || changed;
+        }
+
+        elapsedSinceCharacter -= count * interval;
+        compactQueue();
+
+        if (changed) {
             chatBox.scrollTop = chatBox.scrollHeight;
             updateChatScrollButton();
         }
+        if (pendingCount() > 0) {
+            animationFrameId = requestAnimationFrame(renderFrame);
+        }
+    }
+
+    function scheduleRender() {
+        if (animationFrameId === null && pendingCount() > 0) {
+            animationFrameId = requestAnimationFrame(renderFrame);
+        }
+    }
+
+    function enqueueText(text, flushLastGrapheme) {
+        segmentationBuffer += text;
+        const graphemes = chatGraphemeSegmenter
+            ? Array.from(chatGraphemeSegmenter.segment(segmentationBuffer), item => item.segment)
+            : Array.from(segmentationBuffer);
+        const queuedCount = flushLastGrapheme ? graphemes.length : Math.max(0, graphemes.length - 1);
+        queue.push(...graphemes.slice(0, queuedCount));
+        segmentationBuffer = graphemes.slice(queuedCount).join('');
+    }
+
+    function finish() {
+        if (animationFrameId !== null) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+        }
+        enqueueText('', true);
+        ensureStarted();
+
+        while (queueIndex < queue.length) {
+            renderGrapheme(queue[queueIndex++]);
+        }
+        queue = [];
+        queueIndex = 0;
+
+        if (pendingAsterisk) {
+            appendText('*');
+            pendingAsterisk = false;
+        }
+        if (boldElement) {
+            const marker = document.createTextNode('**');
+            messageElement.insertBefore(marker, boldElement);
+            while (boldElement.firstChild) {
+                messageElement.insertBefore(boldElement.firstChild, boldElement);
+            }
+            boldElement.remove();
+            boldElement = null;
+            currentTextNode = null;
+        }
+
+        messageElement.classList.remove('streaming');
+        chatBox.scrollTop = chatBox.scrollHeight;
+        updateChatScrollButton();
     }
 
     return {
         append(text) {
-            queuedText += text;
-            flush();
+            enqueueText(text, false);
+            ensureStarted();
+            scheduleRender();
         },
-        finish() {
-            flush();
-            if (pendingText) {
-                appendText(pendingText);
-                pendingText = '';
-            }
-            if (boldElement) {
-                const marker = document.createTextNode('**');
-                messageElement.insertBefore(marker, boldElement);
-                while (boldElement.firstChild) {
-                    messageElement.insertBefore(boldElement.firstChild, boldElement);
-                }
-                boldElement.remove();
-                boldElement = null;
-                currentTextNode = null;
-            }
-            messageElement.classList.remove('streaming');
-            chatBox.scrollTop = chatBox.scrollHeight;
-            updateChatScrollButton();
-        }
+        finish
     };
+}
+
+function showTypingIndicator(messageElement) {
+    messageElement.classList.add('typing');
+    messageElement.setAttribute('role', 'status');
+    messageElement.setAttribute('aria-label', '');
+    messageElement.textContent = '';
+
+    for (let index = 0; index < 3; index += 1) {
+        const dot = document.createElement('span');
+        dot.className = 'typing-dot';
+        dot.setAttribute('aria-hidden', 'true');
+        messageElement.appendChild(dot);
+    }
 }
 
 async function sendMessage() {
@@ -133,7 +229,7 @@ async function sendMessage() {
 
     const loadingMessage = document.createElement('div');
     loadingMessage.className = 'msg bot-msg';
-    loadingMessage.textContent = 'AI đang suy nghĩ...';
+    showTypingIndicator(loadingMessage);
     chatBox.appendChild(loadingMessage);
     chatBox.scrollTop = chatBox.scrollHeight;
     updateChatScrollButton();
@@ -222,7 +318,7 @@ async function sendMessage() {
         }
     } catch (error) {
         if (streamRenderer) {
-            streamRenderer.finish();
+            await streamRenderer.finish();
             streamRenderer = null;
         }
         console.error('[Chat] Request failed:', {
@@ -240,7 +336,7 @@ async function sendMessage() {
             loadingMessage.textContent = 'The assistant is temporarily unavailable. Please try again later.';
         }
     } finally {
-        if (streamRenderer) streamRenderer.finish();
+        if (streamRenderer) await streamRenderer.finish();
         clearTimeout(timeoutId);
         chatRequestInProgress = false;
         inputEl.disabled = false;

@@ -72,7 +72,7 @@ flowchart TD
 2. Frontend JavaScript sends a `POST` request to the Render API.
 3. The backend validates the payload and calls Gemini using server-side configuration.
 4. The backend forwards Gemini's server-sent events to the browser as text chunks.
-5. The chat interface displays each chunk as it arrives, or shows a user-friendly error message.
+5. The chat interface shows an animated typing indicator while waiting, then progressively renders streamed text with `requestAnimationFrame` at a 30 ms-per-grapheme reference pace. It speeds up when text queues up and flushes all remaining text immediately when the stream ends.
 
 ## 🗂️ Project Structure
 
