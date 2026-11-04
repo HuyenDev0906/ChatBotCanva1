@@ -38,7 +38,13 @@
 </svg>
 </button>
 <div class="chat-input-area">
-<input id="userInput" placeholder="Hỏi tớ bất cứ điều gì..." type="text"/>
+<div aria-label="Lệnh nhanh" class="chat-command-menu" hidden id="chatCommandMenu">
+<button aria-label="/gopy, Gửi góp ý" class="chat-command-option" type="button" data-command="/gopy"><code>/gopy</code><span>Gửi góp ý</span></button>
+<button aria-label="/feedback, Gửi góp ý" class="chat-command-option" type="button" data-command="/feedback"><code>/feedback</code><span>Gửi góp ý</span></button>
+<button aria-label="/help, Hướng dẫn" class="chat-command-option" type="button" data-command="/help"><code>/help</code><span>Hướng dẫn</span></button>
+<button aria-label="/about, Giới thiệu" class="chat-command-option" type="button" data-command="/about"><code>/about</code><span>Giới thiệu</span></button>
+</div>
+<input aria-controls="chatCommandMenu" aria-expanded="false" id="userInput" placeholder="Hỏi tớ bất cứ điều gì..." type="text"/>
 <button onclick="sendMessage()" type="button">Gửi</button>
 </div>
 </div>

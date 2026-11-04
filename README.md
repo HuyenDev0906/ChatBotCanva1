@@ -73,6 +73,7 @@ flowchart TD
 3. The backend validates the payload and calls Gemini using server-side configuration.
 4. The backend forwards Gemini's server-sent events to the browser as text chunks.
 5. The chat interface shows an animated typing indicator while waiting, then progressively renders streamed text with `requestAnimationFrame` at a 30 ms-per-grapheme reference pace. It speeds up when text queues up and flushes all remaining text immediately when the stream ends.
+6. Typing `/` in the chat input shows the `/gopy`, `/feedback`, `/help`, and `/about` shortcuts. Selecting a shortcut runs it locally; `/gopy` and `/feedback` return the feedback form link in chat.
 
 ## 🗂️ Project Structure
 

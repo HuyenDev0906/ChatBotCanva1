@@ -9,6 +9,13 @@ function getApiUrl() {
 
 let chatRequestInProgress = false;
 const STREAM_TARGET_MS_PER_GRAPHEME = 30;
+const CHAT_COMMANDS = [
+    { command: '/gopy', label: 'Gửi góp ý' },
+    { command: '/feedback', label: 'Gửi góp ý' },
+    { command: '/help', label: 'Hướng dẫn' },
+    { command: '/about', label: 'Giới thiệu' }
+];
+const FEEDBACK_FORM_URL = 'https://forms.gle/dFFJ6ZhqV3HWssyf9';
 const chatGraphemeSegmenter = typeof Intl.Segmenter === 'function'
     ? new Intl.Segmenter(undefined, { granularity: 'grapheme' })
     : null;
@@ -210,10 +217,53 @@ function showTypingIndicator(messageElement) {
 async function sendMessage() {
     const inputEl = document.getElementById('userInput');
     const chatBox = document.getElementById('chatBox');
-    const sendButton = document.querySelector('.chat-input-area button');
+    const sendButton = document.querySelector('.chat-input-area > button');
     const text = inputEl.value.trim();
 
     if (!text || chatRequestInProgress) return;
+
+    const command = CHAT_COMMANDS.find(item => item.command === text.toLowerCase());
+    if (command) {
+        const commandMenu = document.getElementById('chatCommandMenu');
+        chatRequestInProgress = true;
+        if (sendButton) sendButton.disabled = true;
+        inputEl.disabled = true;
+        if (commandMenu) commandMenu.hidden = true;
+        inputEl.setAttribute('aria-expanded', 'false');
+
+        const userMessage = document.createElement('div');
+        userMessage.className = 'msg user-msg';
+        userMessage.textContent = text;
+        chatBox.appendChild(userMessage);
+        inputEl.value = '';
+
+        const botMessage = document.createElement('div');
+        botMessage.className = 'msg bot-msg';
+        if (command.command === '/gopy' || command.command === '/feedback') {
+            botMessage.appendChild(document.createTextNode('Cảm ơn cậu muốn góp ý cho Lá Chắn Xanh AI! Cậu có thể gửi ý kiến tại biểu mẫu này: '));
+            const formLink = document.createElement('a');
+            formLink.href = FEEDBACK_FORM_URL;
+            formLink.target = '_blank';
+            formLink.rel = 'noopener noreferrer';
+            formLink.textContent = 'Mở biểu mẫu góp ý';
+            botMessage.appendChild(formLink);
+        } else {
+            const reply = command.command === '/help'
+                ? 'Các lệnh nhanh:\n/gopy hoặc /feedback — Gửi góp ý\n/help — Xem hướng dẫn\n/about — Giới thiệu Lá Chắn Xanh AI\n\nCậu cũng có thể nhập câu hỏi hoặc điều đang băn khoăn để trò chuyện với tớ.'
+                : 'Lá Chắn Xanh AI là trợ lý đồng hành, chia sẻ thông tin và gợi ý hướng xử lý an toàn khi gặp bạo lực mạng. Tớ không thay thế chuyên gia hay người lớn đáng tin cậy; nếu cậu đang gặp nguy hiểm, hãy tìm người hỗ trợ ngay nhé.';
+            renderBotMessage(botMessage, reply);
+        }
+
+        chatBox.appendChild(botMessage);
+        addReactionControls(botMessage);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        updateChatScrollButton();
+        chatRequestInProgress = false;
+        inputEl.disabled = false;
+        if (sendButton) sendButton.disabled = false;
+        inputEl.focus();
+        return;
+    }
 
     chatRequestInProgress = true;
     if (sendButton) sendButton.disabled = true;
@@ -356,11 +406,31 @@ async function sendMessage() {
 }
 
 const userInput = document.getElementById('userInput');
+const chatCommandMenu = document.getElementById('chatCommandMenu');
 if (userInput) {
-    userInput.addEventListener('keypress', function (e) {
+    userInput.addEventListener('input', function () {
+        const showMenu = userInput.value.trimStart().startsWith('/');
+        if (chatCommandMenu) chatCommandMenu.hidden = !showMenu;
+        userInput.setAttribute('aria-expanded', String(showMenu));
+    });
+    userInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && chatCommandMenu && !chatCommandMenu.hidden) {
+            chatCommandMenu.hidden = true;
+            userInput.setAttribute('aria-expanded', 'false');
+            return;
+        }
         if (e.key === 'Enter') {
+            e.preventDefault();
             sendMessage();
         }
+    });
+}
+if (chatCommandMenu && userInput) {
+    chatCommandMenu.addEventListener('click', function (event) {
+        const option = event.target.closest('[data-command]');
+        if (!option) return;
+        userInput.value = option.dataset.command;
+        sendMessage();
     });
 }
 
