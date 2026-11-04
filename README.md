@@ -57,10 +57,10 @@ For the current scope, a framework such as React would introduce additional tool
 ```mermaid
 flowchart TD
     U[Student / Browser] --> F[Frontend: HTML + CSS + JavaScript]
-    F -->|HTTPS POST /api/sever| B[Render: Node.js API]
+    F -->|HTTPS POST /api/server · SSE| B[Render: Node.js API]
     B -->|Server-side request with secret key| G[Google Gemini API]
     G -->|Generated response| B
-    B -->|JSON reply| F
+    B -->|Streaming text chunks| F
     F --> U
     GH[GitHub Repository] -->|Deploy static files| P[GitHub Pages]
     P -.-> F
@@ -71,8 +71,8 @@ flowchart TD
 1. A user enters a message in the chatbot.
 2. Frontend JavaScript sends a `POST` request to the Render API.
 3. The backend validates the payload and calls Gemini using server-side configuration.
-4. The backend returns a JSON response.
-5. The chat interface displays the response or a user-friendly error message.
+4. The backend forwards Gemini's server-sent events to the browser as text chunks.
+5. The chat interface displays each chunk as it arrives, or shows a user-friendly error message.
 
 ## 🗂️ Project Structure
 
@@ -179,6 +179,15 @@ Content-Type: application/json
 ```
 
 Some backend versions may also accept conversation history using `history` or a similar property. Check `api/server.js` for the authoritative request schema.
+
+The current frontend also sends `"stream": true`. In that mode the API returns
+`text/event-stream`; each `data:` event contains a JSON object with a `text`
+field, and streaming errors contain `error` and `status` fields. Requests that
+omit `stream` continue to receive the JSON response shown above.
+
+Standalone simple greetings are answered directly by the backend without a
+Gemini request, so they do not wait for model startup or prompt processing.
+Other messages continue to use Gemini streaming.
 
 ### CORS and Preflight Requests
 

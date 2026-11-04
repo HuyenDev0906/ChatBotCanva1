@@ -370,6 +370,22 @@ body {
     box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
 }
 
+.msg.bot-msg.streaming::after {
+    content: "";
+    display: inline-block;
+    height: 1em;
+    margin-left: 2px;
+    border-right: 2px solid currentColor;
+    vertical-align: -0.15em;
+    animation: chat-caret-blink 1s steps(2, start) infinite;
+}
+
+@keyframes chat-caret-blink {
+    to {
+        visibility: hidden;
+    }
+}
+
 .msg.error-msg {
     background: #fff1f2;
     border: 1px solid #fecdd3;
@@ -690,4 +706,3 @@ body {
     }
 
 }
-

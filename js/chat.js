@@ -9,18 +9,106 @@ function getApiUrl() {
 
 let chatRequestInProgress = false;
 
-async function fetchWithTimeout(url, options, timeoutMs = 25000) {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+function renderBotMessage(messageElement, text) {
+    const fragment = document.createDocumentFragment();
+    const parts = String(text).split(/(\*\*[\s\S]+?\*\*)/g);
 
-    try {
-        return await fetch(url, {
-            ...options,
-            signal: controller.signal
-        });
-    } finally {
-        clearTimeout(timeoutId);
+    parts.forEach(function (part) {
+        const boldMatch = part.match(/^\*\*([\s\S]+)\*\*$/);
+        if (boldMatch) {
+            const strong = document.createElement('strong');
+            strong.textContent = boldMatch[1];
+            fragment.appendChild(strong);
+        } else {
+            fragment.appendChild(document.createTextNode(part));
+        }
+    });
+
+    messageElement.replaceChildren(fragment);
+}
+
+function createStreamingBotRenderer(messageElement, chatBox) {
+    let queuedText = '';
+    let pendingText = '';
+    let currentTextNode = null;
+    let boldElement = null;
+    let started = false;
+
+    function appendText(text) {
+        if (!text) return;
+
+        const parent = boldElement || messageElement;
+        if (!currentTextNode || currentTextNode.parentNode !== parent) {
+            currentTextNode = document.createTextNode('');
+            parent.appendChild(currentTextNode);
+        }
+        currentTextNode.appendData(text);
     }
+
+    function flush() {
+        if (!started && queuedText) {
+            messageElement.replaceChildren();
+            messageElement.classList.add('streaming');
+            started = true;
+        }
+
+        pendingText += queuedText;
+        queuedText = '';
+
+        while (pendingText) {
+            const markerIndex = pendingText.indexOf('**');
+            if (markerIndex === -1) {
+                const keepTrailingStar = pendingText.endsWith('*');
+                const safeLength = pendingText.length - (keepTrailingStar ? 1 : 0);
+                appendText(pendingText.slice(0, safeLength));
+                pendingText = keepTrailingStar ? '*' : '';
+                break;
+            }
+
+            appendText(pendingText.slice(0, markerIndex));
+            pendingText = pendingText.slice(markerIndex + 2);
+
+            if (boldElement) {
+                boldElement = null;
+            } else {
+                boldElement = document.createElement('strong');
+                messageElement.appendChild(boldElement);
+            }
+            currentTextNode = null;
+        }
+
+        if (started) {
+            chatBox.scrollTop = chatBox.scrollHeight;
+            updateChatScrollButton();
+        }
+    }
+
+    return {
+        append(text) {
+            queuedText += text;
+            flush();
+        },
+        finish() {
+            flush();
+            if (pendingText) {
+                appendText(pendingText);
+                pendingText = '';
+            }
+            if (boldElement) {
+                const marker = document.createTextNode('**');
+                messageElement.insertBefore(marker, boldElement);
+                while (boldElement.firstChild) {
+                    messageElement.insertBefore(boldElement.firstChild, boldElement);
+                }
+                boldElement.remove();
+                boldElement = null;
+                currentTextNode = null;
+            }
+            messageElement.classList.remove('streaming');
+            chatBox.scrollTop = chatBox.scrollHeight;
+            updateChatScrollButton();
+        }
+    };
 }
 
 async function sendMessage() {
@@ -50,45 +138,93 @@ async function sendMessage() {
     chatBox.scrollTop = chatBox.scrollHeight;
     updateChatScrollButton();
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
+    let streamRenderer = null;
+
     try {
-        const response = await fetchWithTimeout(getApiUrl(), {
+        const response = await fetch(getApiUrl(), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text })
-        }, 25000);
+            body: JSON.stringify({ message: text, stream: true }),
+            signal: controller.signal
+        });
 
-        let data = {};
-        const rawText = await response.text();
-
-        if (rawText) {
-            try {
-                data = JSON.parse(rawText);
-            } catch (parseError) {
-                console.error('Invalid JSON from /api/sever:', rawText);
-                data = { error: 'Phản hồi không hợp lệ từ máy chủ.' };
+        if (response.headers.get('content-type')?.includes('text/event-stream')) {
+            if (!response.ok) {
+                throw new Error('Chat API request failed.');
             }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+            let receivedText = false;
+            streamRenderer = createStreamingBotRenderer(loadingMessage, chatBox);
+
+            function consumeEvent(event) {
+                const data = event
+                    .split(/\r?\n/)
+                    .filter(line => line.startsWith('data:'))
+                    .map(line => line.slice(5).trim())
+                    .join('\n');
+
+                if (!data) return;
+
+                const item = JSON.parse(data);
+                if (item.error) {
+                    const streamError = new Error(item.error);
+                    streamError.status = item.status;
+                    throw streamError;
+                }
+                if (item.text) {
+                    receivedText = true;
+                    streamRenderer.append(item.text);
+                }
+            }
+
+            while (true) {
+                const { value, done } = await reader.read();
+                buffer += decoder.decode(value || new Uint8Array(), { stream: !done });
+                const events = buffer.split(/\r?\n\r?\n/);
+                buffer = events.pop() || '';
+                events.forEach(consumeEvent);
+                if (done) break;
+            }
+            if (buffer.trim()) consumeEvent(buffer);
+            if (!receivedText) {
+                loadingMessage.textContent = 'Không có phản hồi từ AI.';
+            }
+        } else {
+            const rawText = await response.text();
+            let data = {};
+            if (rawText) {
+                try {
+                    data = JSON.parse(rawText);
+                } catch (parseError) {
+                    console.error('Invalid JSON from /api/sever:', rawText);
+                    data = { error: 'Phản hồi không hợp lệ từ máy chủ.' };
+                }
+            }
+
+            if (!response.ok) {
+                const requestError = new Error((data && data.error) || 'Chat API request failed.');
+                requestError.status = response.status;
+                throw requestError;
+            }
+
+            let reply = data && data.reply ? data.reply : '';
+            if (!reply && data?.data?.candidates?.[0]?.content?.parts) {
+                reply = data.data.candidates[0].content.parts
+                    .map(part => part.text || '')
+                    .join('');
+            }
+            renderBotMessage(loadingMessage, reply || 'Không có phản hồi từ AI.');
         }
-
-        if (!response.ok) {
-            const requestError = new Error((data && data.error) || 'Chat API request failed.');
-            requestError.status = response.status;
-            throw requestError;
-        }
-
-        var reply = data && data.reply ? data.reply : '';
-
-        if (!reply && data && data.data && data.data.candidates && data.data.candidates[0] && data.data.candidates[0].content && data.data.candidates[0].content.parts) {
-            reply = data.data.candidates[0].content.parts.map(function (part) {
-                return part.text || '';
-            }).join('');
-        }
-
-        if (!reply) {
-            reply = 'Không có phản hồi từ AI.';
-        }
-
-        loadingMessage.textContent = reply;
     } catch (error) {
+        if (streamRenderer) {
+            streamRenderer.finish();
+            streamRenderer = null;
+        }
         console.error('[Chat] Request failed:', {
             status: error.status || null,
             message: error.message || 'Unknown request error'
@@ -104,6 +240,8 @@ async function sendMessage() {
             loadingMessage.textContent = 'The assistant is temporarily unavailable. Please try again later.';
         }
     } finally {
+        if (streamRenderer) streamRenderer.finish();
+        clearTimeout(timeoutId);
         chatRequestInProgress = false;
         inputEl.disabled = false;
         if (sendButton) sendButton.disabled = false;

@@ -104,6 +104,15 @@ function isCrisis(text) {
     return CRISIS_KEYWORDS.some(keyword => normalized.includes(keyword));
 }
 
+function getQuickGreetingReply(text) {
+    const normalized = normalizeText(text);
+    const isSimpleGreeting = /^(?:(?:xin )?chao|hello|hi|hey)(?: (?:ban|cau|minh|bot))?(?: bang (?:mot cau )?(?:ngan|than thien)(?: nhe| nha)?)?[.!?]*$/.test(normalized);
+
+    return isSimpleGreeting
+        ? 'Chào cậu, tớ là Lá Chắn Xanh AI. Hôm nay cậu muốn kể chuyện gì không?'
+        : null;
+}
+
 // =========================
 // System instruction
 // =========================
@@ -365,11 +374,8 @@ function buildContents(message, history) {
 // Call Gemini API
 // =========================
 
-async function callGemini(message, apiKey, history) {
-    const url =
-        `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent`;
-
-    const requestBody = {
+function buildGeminiRequestBody(message, history) {
+    return {
         systemInstruction: {
             parts: [{ text: systemInstruction }]
         },
@@ -388,6 +394,12 @@ async function callGemini(message, apiKey, history) {
             { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' }
         ]
     };
+}
+
+async function callGemini(message, apiKey, history) {
+    const url =
+        `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent`;
+    const requestBody = buildGeminiRequestBody(message, history);
 
     console.log('Calling Gemini... model:', MODEL_NAME);
 
@@ -510,6 +522,132 @@ async function callGemini(message, apiKey, history) {
     }
 }
 
+async function callGeminiStream(message, apiKey, history, onText) {
+    const url =
+        `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:streamGenerateContent?alt=sse`;
+    const requestBody = buildGeminiRequestBody(message, history);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-goog-api-key': apiKey
+            },
+            body: JSON.stringify(requestBody),
+            signal: controller.signal
+        });
+
+        if (!response.ok) {
+            const rawText = await response.text();
+            let data = {};
+            try {
+                data = rawText ? JSON.parse(rawText) : {};
+            } catch (error) {
+                console.error('Gemini returned invalid JSON.');
+            }
+
+            const accessDenied = response.status === 401 || response.status === 403;
+            return {
+                ok: false,
+                statusCode: accessDenied ? 403 : response.status,
+                body: {
+                    error: accessDenied
+                        ? 'Access was denied. Please contact the administrator or Ms. Huyen.'
+                        : 'The assistant service is temporarily unavailable.'
+                },
+                details: data?.error
+            };
+        }
+
+        if (!response.body) {
+            return {
+                ok: false,
+                statusCode: 502,
+                body: { error: 'Gemini không hỗ trợ phản hồi dạng stream.' }
+            };
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let reply = '';
+
+        const consumeEvent = event => {
+            const data = event
+                .split(/\r?\n/)
+                .filter(line => line.startsWith('data:'))
+                .map(line => line.slice(5).trim())
+                .join('\n');
+
+            if (!data || data === '[DONE]') return;
+
+            let chunk;
+            try {
+                chunk = JSON.parse(data);
+            } catch (error) {
+                throw new Error('Gemini trả về một phần dữ liệu stream không hợp lệ.');
+            }
+
+            const text = chunk?.candidates?.[0]?.content?.parts
+                ?.map(part => part.text || '')
+                .join('') || '';
+
+            if (text) {
+                reply += text;
+                onText(text);
+            }
+        };
+
+        while (true) {
+            const { value, done } = await reader.read();
+            buffer += decoder.decode(value || new Uint8Array(), { stream: !done });
+
+            const events = buffer.split(/\r?\n\r?\n/);
+            buffer = events.pop() || '';
+            events.forEach(consumeEvent);
+
+            if (done) break;
+        }
+
+        if (buffer.trim()) consumeEvent(buffer);
+
+        if (!reply.trim()) {
+            return {
+                ok: true,
+                empty: true,
+                statusCode: 200,
+                body: { reply: FALLBACK_MESSAGE }
+            };
+        }
+
+        return { ok: true, statusCode: 200, body: { reply } };
+    } catch (error) {
+        if (error.name === 'AbortError') {
+            return {
+                ok: false,
+                statusCode: 504,
+                body: { error: 'AI phản hồi quá lâu. Vui lòng thử lại.' }
+            };
+        }
+
+        console.error('Gemini streaming request error:', error);
+        return {
+            ok: false,
+            statusCode: 502,
+            body: { error: error.message || 'Không thể nhận phản hồi từ Gemini.' }
+        };
+    } finally {
+        clearTimeout(timeoutId);
+    }
+}
+
+function writeSse(res, data) {
+    res.write(`data: ${JSON.stringify(data)}\n\n`);
+}
+
 // =========================
 // API Handler
 // =========================
@@ -583,6 +721,26 @@ async function handleApi(req, res) {
         }
 
         const crisis = isCrisis(message);
+        const quickGreeting = !crisis &&
+            (!Array.isArray(body.history) || body.history.length === 0) &&
+            getQuickGreetingReply(message);
+
+        if (quickGreeting) {
+            if (body.stream === true) {
+                setCorsHeaders(res);
+                res.writeHead(200, {
+                    'Content-Type': 'text/event-stream; charset=utf-8',
+                    'Cache-Control': 'no-cache, no-transform',
+                    'Connection': 'keep-alive',
+                    'X-Accel-Buffering': 'no'
+                });
+                writeSse(res, { text: quickGreeting });
+                res.end();
+            } else {
+                sendJson(res, 200, { reply: quickGreeting, crisis: false });
+            }
+            return;
+        }
 
         // API key
         const apiKey = process.env.GEMINI_API_KEY;
@@ -594,6 +752,45 @@ async function handleApi(req, res) {
                 error: 'Chưa cấu hình GEMINI_API_KEY.'
             });
 
+            return;
+        }
+
+        if (body.stream === true) {
+            setCorsHeaders(res);
+            res.writeHead(200, {
+                'Content-Type': 'text/event-stream; charset=utf-8',
+                'Cache-Control': 'no-cache, no-transform',
+                'Connection': 'keep-alive',
+                'X-Accel-Buffering': 'no'
+            });
+            res.write(': connected\n\n');
+
+            const result = await callGeminiStream(
+                message,
+                apiKey,
+                body.history,
+                text => writeSse(res, { text })
+            );
+
+            if (!result.ok && crisis) {
+                writeSse(res, { text: `${FALLBACK_MESSAGE}\n\n${CRISIS_NOTE}` });
+            } else if (result.ok && result.body.reply) {
+                let finalText = '';
+                if (result.empty) {
+                    finalText = result.body.reply;
+                }
+                if (crisis && !result.body.reply.includes('111')) {
+                    finalText += `${finalText ? '\n\n' : ''}${CRISIS_NOTE}`;
+                }
+                if (finalText) writeSse(res, { text: finalText });
+            } else if (!result.ok) {
+                writeSse(res, {
+                    error: result.body.error || 'The assistant service is temporarily unavailable.',
+                    status: result.statusCode
+                });
+            }
+
+            res.end();
             return;
         }
 
@@ -761,5 +958,7 @@ module.exports = {
     serveStatic,
     buildSystemInstruction,
     callGemini,
-    isCrisis
+    callGeminiStream,
+    isCrisis,
+    getQuickGreetingReply
 };
