@@ -1,0 +1,63 @@
+{
+  "version": "2026-11-05",
+  "baseline": {
+    "scenarios": {
+      "file": "scenarios(2).json",
+      "sha256": "b1103672fd91933019bf9103a27d6ed5ff37b9d67af634a32600182cdb178957",
+      "keys": [
+        "cyberbullyingTypes",
+        "rule3S",
+        "emotionalTechniques",
+        "bystanderGuide",
+        "imageBasedThreatGuide",
+        "whenTalkingToAdults",
+        "evidenceTips"
+      ]
+    },
+    "laws_data": {
+      "file": "laws_data(2).json",
+      "sha256": "b7423814ea0a068e8ff903b4a78af87b58d9f583ebe86c3ec1e521b482864084",
+      "keys": [
+        "legalFrameworks",
+        "noteForBot",
+        "disclaimer",
+        "dataPolicy"
+      ]
+    },
+    "examples": {
+      "file": "examples(2).json",
+      "sha256": "720a519acaee5b5ece71228c3bc26143855cc5b68df23a8aba2afdcc532bc7fc",
+      "keys": [
+        "examples"
+      ]
+    },
+    "botConfig": {
+      "file": "botConfig(2).json",
+      "sha256": "1a9cfa94f8143911afc00c3576cefe004c181d4340ce12d76f4c3208fd42723f",
+      "keys": [
+        "botName",
+        "role",
+        "toneOfVoice",
+        "emergencyHotline",
+        "emergencyContacts",
+        "crisisKeywords",
+        "crisisNote",
+        "fallbackMessage"
+      ]
+    }
+  },
+  "changes": {
+    "realWorldScenariosAdded": 20,
+    "fewShotExamplesAdded": 24,
+    "realWorldSourcesAdded": 13,
+    "originalKeysPreserved": true,
+    "originalValuesPreserved": true,
+    "legalFrameworksUnchanged": true
+  },
+  "limitations": [
+    "Không phải fine-tuning mô hình Gemini",
+    "Chưa tích hợp vào backend thực tế do chưa có server.js",
+    "Chưa kiểm thử end-to-end hay kiểm định lâm sàng",
+    "Mẫu case đã ẩn danh, tổng hợp từ mô thức báo chí, không phải tư liệu lời khai thật"
+  ]
+}

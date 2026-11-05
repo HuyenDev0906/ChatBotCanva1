@@ -254,5 +254,125 @@
   ],
   "noteForBot": "Chỉ dùng mục verified=true để trích dẫn tên văn bản và URL. Chỉ dẫn số điều khi article đã được đối chiếu chính thức. Không tự suy đoán trách nhiệm hình sự, mức phạt hay hình thức kỷ luật. Với tình huống nguy hiểm, hướng dẫn an toàn trước.",
   "disclaimer": "Thông tin chỉ mang tính tham khảo chung, không phải tư vấn pháp lý. Các văn bản có thể đã được sửa đổi, thay thế; cần đối chiếu với nguồn chính thức trước khi sử dụng.",
-  "dataPolicy": "Các mục verified=false là danh mục nghiên cứu nội bộ, tuyệt đối không đưa vào nội dung pháp lý trả cho học sinh."
+  "dataPolicy": "Các mục verified=false là danh mục nghiên cứu nội bộ, tuyệt đối không đưa vào nội dung pháp lý trả cho học sinh.",
+  "recentChildSafetyEvidence2021_2026": {
+    "disclaimer": "Đây là nguồn bối cảnh/định hướng an toàn, KHÔNG phải căn cứ để trích dẫn điều luật mới. Không thay đổi verified của các mục legalFrameworks gốc.",
+    "sources": [
+      {
+        "id": "SRC2022_VTV",
+        "title": "Vẫn nhức nhối nạn bạo lực học đường",
+        "url": "https://vtv.vn/xa-hoi/van-nhuc-nhoi-nan-bao-luc-hoc-duong-20220405130537333.htm",
+        "publisher": "VTV",
+        "date": "2022-04-05",
+        "type": "news"
+      },
+      {
+        "id": "SRC2023_VTV",
+        "title": "Bạc Liêu: Xử lý vụ việc học sinh đánh nhau trong lớp, quay clip đưa lên mạng",
+        "url": "https://vtv.vn/xa-hoi/bac-lieu-xu-ly-vu-viec-hoc-sinh-tieu-hoc-danh-nhau-trong-lop-quay-clip-dua-len-mang-20230411080031383.htm",
+        "publisher": "VTV",
+        "date": "2023-04-11",
+        "type": "news"
+      },
+      {
+        "id": "SRC2024_VNE",
+        "title": "Nữ sinh bị bạn đánh đập trước lớp dù đã quỳ gối, xin tha",
+        "url": "https://vnexpress.net/nu-sinh-bi-ban-danh-dap-truoc-lop-du-da-quy-goi-xin-tha-4734461.html",
+        "publisher": "VnExpress",
+        "date": "2024-04-15",
+        "type": "news"
+      },
+      {
+        "id": "SRC2024_VTV",
+        "title": "Học sinh hoang mang trước thông tin nhà vệ sinh bị gắn camera quay lén",
+        "url": "https://vtv.vn/xa-hoi/tp-ho-chi-minh-hoc-sinh-hoang-mang-truoc-thong-tin-nha-ve-sinh-bi-gan-camera-quay-len-20241025225326664.htm",
+        "publisher": "VTV",
+        "date": "2024-10-25",
+        "type": "news"
+      },
+      {
+        "id": "SRC2025_VNE",
+        "title": "Ép bạn vào nghĩa trang đánh, quay video",
+        "url": "https://vnexpress.net/ep-ban-vao-nghia-trang-danh-quay-video-4994204.html",
+        "publisher": "VnExpress",
+        "date": "2025-12-15",
+        "type": "news"
+      },
+      {
+        "id": "SRC2025_VTV",
+        "title": "Vụ nam sinh lớp 8 đâm bạn ở Lào Cai: Nguyên nhân do mâu thuẫn từ trước",
+        "url": "https://vtv.vn/vu-nam-sinh-lop-8-dam-ban-o-lao-cai-nguyen-nhan-do-mau-thuan-tu-truoc-100251107010442723.htm",
+        "publisher": "VTV",
+        "date": "2025-11-08",
+        "type": "news"
+      },
+      {
+        "id": "SRC2025_VTV_REVIEW",
+        "title": "Báo động đỏ bạo lực học đường",
+        "url": "https://vtv.vn/bao-dong-do-bao-luc-hoc-duong-100251110121919339.htm",
+        "publisher": "VTV",
+        "date": "2025-11-10",
+        "type": "news"
+      },
+      {
+        "id": "SRC2026_VTV_ASSAULT",
+        "title": "Nhóm học sinh đánh hội đồng bạn, quay clip tung lên mạng gây bức xúc",
+        "url": "https://vtv.vn/nhom-hoc-sinh-danh-hoi-dong-ban-quay-clip-tung-len-mang-gay-buc-xuc-1002603240913006.htm",
+        "publisher": "VTV",
+        "date": "2026-03-24",
+        "type": "news"
+      },
+      {
+        "id": "SRC2026_VTV_DEEPFAKE",
+        "title": "Học sinh tổn thương vì ảnh giả từ AI lan trong trường học",
+        "url": "https://vtv.vn/tao-anh-nhay-cam-gia-tu-ai-nguy-co-trong-hoc-duong-100260502090419425.htm",
+        "publisher": "VTV",
+        "date": "2026-05-02",
+        "type": "news"
+      },
+      {
+        "id": "SRC2026_UNICEF",
+        "title": "1 in 5 children across 21 countries have experienced tech-facilitated sexual exploitation and abuse",
+        "url": "https://www.unicef.org/vietnam/press-releases/1-5-children-across-21-countries-have-experienced-tech-facilitated-sexual",
+        "publisher": "UNICEF",
+        "date": "2026-09-03",
+        "type": "research"
+      },
+      {
+        "id": "SRC2026_UNICEF_WELLBEING",
+        "title": "Mental Health",
+        "url": "https://www.unicef.org/vietnam/mental-health",
+        "publisher": "UNICEF Việt Nam",
+        "date": null,
+        "type": "guidance"
+      },
+      {
+        "id": "SRC_111",
+        "title": "Số điện thoại bảo vệ trẻ em",
+        "url": "https://tongdai111.vn/tin/so-dien-thoai-bao-ve-tre-em",
+        "publisher": "Tổng đài Quốc gia Bảo vệ Trẻ em 111",
+        "date": null,
+        "type": "official-service"
+      },
+      {
+        "id": "SRC2024_UNICEF_ONLINE",
+        "title": "Bộ Quy tắc ứng xử về bảo vệ trẻ em trên môi trường mạng",
+        "url": "https://www.unicef.org/vietnam/vi/tai%20lieu/bo-quy-tac-ung-xu-ve-bao-ve-tre-em-tren-moi-truong-mang",
+        "publisher": "UNICEF Việt Nam",
+        "date": null,
+        "type": "guidance"
+      }
+    ],
+    "verifiedHelpline111": {
+      "number": "111",
+      "cost": "Miễn phí",
+      "availability": "24/7",
+      "sourceId": "SRC_111"
+    },
+    "legalCitationRules": [
+      "Chỉ dẫn điều/khoản khi nguồn luật cụ thể đã được xác minh toàn văn và tình trạng hiệu lực.",
+      "Không tự kết luận mức phạt/trách nhiệm hình sự của học sinh từ tình huống chat.",
+      "Nguồn báo chí chứng minh mô thức rủi ro, không thể thay thế kiểm chứng pháp lý."
+    ]
+  }
 }

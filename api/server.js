@@ -5,6 +5,7 @@ const { parse } = require('url');
 
 const rootDir = path.join(__dirname, '..');
 const envPath = path.join(rootDir, '.env');
+const { selectKnowledge } = require('./data/retriever');
 
 // =========================
 // Settings
@@ -99,6 +100,12 @@ const CRISIS_KEYWORDS = (botConfig.crisisKeywords || []).map(normalizeText);
 
 // Cố ý ưu tiên an toàn: có thể khớp nhầm câu nói thông thường
 // (ví dụ "mệt muốn chết"), khi đó chỉ thêm một lời nhắn hỗ trợ.
+function isImmediateViolence(text) {
+    const value = normalizeText(text);
+
+    return /mang dao.*(den|toi) truong|cam dao.*doa|doa dam|danh hoi dong|chan danh|de doa giet/.test(value);
+}
+
 function isCrisis(text) {
     const normalized = normalizeText(text);
     return CRISIS_KEYWORDS.some(keyword => normalized.includes(keyword));
@@ -122,7 +129,10 @@ function buildExamplesSection() {
         return '';
     }
 
-    const lines = examplesData.examples.map((item, index) =>
+
+    const selected = [1, 6, 10, 12].map(i => examplesData.examples[i]).filter(Boolean);
+
+    const lines = selected.map((item, index) =>
         `Ví dụ ${index + 1}\nHọc sinh: ${item.student}\n${botConfig.botName}: ${item.bot}`
     );
 
@@ -130,11 +140,17 @@ function buildExamplesSection() {
 }
 
 function buildSystemInstruction() {
-    const knowledgeBase = {
-        botConfig,
-        scenarios,
-        lawsData: verifiedLawsData
-    };
+const {
+    realWorldScenarios2021_2026,
+    realWorldSourceCatalog2021_2026,
+    researchUpdate2021_2026,
+    ...baseScenarios
+} = scenarios;
+
+const knowledgeBase = {
+    scenarios: baseScenarios,
+    lawsData: verifiedLawsData
+};
 
     return `Bạn là ${botConfig.botName}, ${botConfig.role}
 
@@ -237,6 +253,22 @@ function sendJson(res, statusCode, payload) {
 
 const rateBuckets = new Map();
 const activeRequests = new Map();
+
+const GEMINI_RPM_SAFE = 10;
+const geminiRequestTimes = [];
+
+function reserveGeminiSlot() {
+    const now = Date.now();
+
+    while (geminiRequestTimes.length && now - geminiRequestTimes[0] >= 60000) {
+        geminiRequestTimes.shift();
+    }
+
+    if (geminiRequestTimes.length >= GEMINI_RPM_SAFE) return false;
+
+    geminiRequestTimes.push(now);
+    return true;
+}
 
 function getClientIp(req) {
     const forwarded = req.headers['x-forwarded-for'];
@@ -373,11 +405,19 @@ function buildContents(message, history) {
 // =========================
 // Call Gemini API
 // =========================
+function getRelevantKnowledge(message, history) {
+    const recent = (Array.isArray(history) ? history : []).slice(-2).map(x => x?.text || '').join(' ');
+    const result = selectKnowledge(`${recent}\n${message}`, { topK: 2 });
+
+    if (!result.matched) return '';
+
+    return '\n\nTÌNH HUỐNG THAM KHẢO (không phải kết luận về mức độ nguy hiểm):\n' + JSON.stringify(result.candidates);
+}
 
 function buildGeminiRequestBody(message, history) {
     return {
         systemInstruction: {
-            parts: [{ text: systemInstruction }]
+            parts: [{ text: systemInstruction + getRelevantKnowledge(message, history)}]
         },
 
         contents: buildContents(message, history),
@@ -396,6 +436,41 @@ function buildGeminiRequestBody(message, history) {
     };
 }
 
+async function fetchGeminiSafely(url, apiKey, requestBody, signal) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+        if (signal.aborted) {
+            const error = new Error('Request aborted');
+            error.name = 'AbortError';
+            throw error;
+        }
+
+        if (!reserveGeminiSlot()) {
+            const error = new Error('Local Gemini rate limit exceeded');
+            error.statusCode = 429;
+            throw error;
+        }
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-goog-api-key': apiKey
+            },
+            body: JSON.stringify(requestBody),
+            signal
+        });
+
+        if (response.status !== 503 || attempt === 1) return response;
+
+        try { await response.body?.cancel(); } catch {}
+
+        const delay = 700 + Math.floor(Math.random() * 800);
+        console.log(`Gemini 503. Retry ${attempt + 1} after ${delay}ms`);
+
+        await new Promise(resolve => setTimeout(resolve, delay));
+    }
+}
+
 async function callGemini(message, apiKey, history) {
     const url =
         `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent`;
@@ -411,18 +486,7 @@ async function callGemini(message, apiKey, history) {
     }, 60000);
 
     try {
-        const response = await fetch(url, {
-            method: 'POST',
-
-            headers: {
-                'Content-Type': 'application/json',
-                'x-goog-api-key': apiKey
-            },
-
-            body: JSON.stringify(requestBody),
-
-            signal: controller.signal
-        });
+        const response = await fetchGeminiSafely(url, apiKey, requestBody, controller.signal);
 
         const rawText = await response.text();
 
@@ -506,6 +570,13 @@ async function callGemini(message, apiKey, history) {
         }
 
         console.error('Gemini request error:', error);
+        if (error.statusCode === 429) {
+            return {
+                ok: false,
+                statusCode: 429,
+                body: { error: 'Hệ thống đang bận, cậu vui lòng thử lại sau một chút nhé.' }
+            };
+        }
 
         return {
             ok: false,
@@ -530,15 +601,7 @@ async function callGeminiStream(message, apiKey, history, onText) {
     const timeoutId = setTimeout(() => controller.abort(), 60000);
 
     try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-goog-api-key': apiKey
-            },
-            body: JSON.stringify(requestBody),
-            signal: controller.signal
-        });
+        const response = await fetchGeminiSafely(url, apiKey, requestBody, controller.signal);
 
         if (!response.ok) {
             const rawText = await response.text();
@@ -721,6 +784,10 @@ async function handleApi(req, res) {
         }
 
         const crisis = isCrisis(message);
+        const immediateViolence = isImmediateViolence(message);
+        const needsSafetyFallback = crisis || immediateViolence;
+
+        const safetyNote = immediateViolence ? 'Nếu có nguy cơ bạo lực sắp xảy ra, hãy tránh xa nơi nguy hiểm, báo ngay cho người lớn đáng tin cậy hoặc nhà trường. Nếu nguy hiểm trước mắt, gọi 113; trẻ em có thể liên hệ 111 để được hỗ trợ.': CRISIS_NOTE;
         const quickGreeting = !crisis &&
             (!Array.isArray(body.history) || body.history.length === 0) &&
             getQuickGreetingReply(message);
@@ -772,8 +839,8 @@ async function handleApi(req, res) {
                 text => writeSse(res, { text })
             );
 
-            if (!result.ok && crisis) {
-                writeSse(res, { text: `${FALLBACK_MESSAGE}\n\n${CRISIS_NOTE}` });
+           if (!result.ok && needsSafetyFallback) {
+                writeSse(res, { text: `${FALLBACK_MESSAGE}\n\n${safetyNote}` });
             } else if (result.ok && result.body.reply) {
                 let finalText = '';
                 if (result.empty) {

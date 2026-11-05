@@ -1,0 +1,119 @@
+[
+  {
+    "id": "SRC2022_VTV",
+    "date": "2022-04-05",
+    "type": "news",
+    "publisher": "VTV",
+    "title": "Vẫn nhức nhối nạn bạo lực học đường",
+    "url": "https://vtv.vn/xa-hoi/van-nhuc-nhoi-nan-bao-luc-hoc-duong-20220405130537333.htm",
+    "scope": "Đánh hội đồng, quay clip phát tán trên mạng"
+  },
+  {
+    "id": "SRC2023_VTV",
+    "date": "2023-04-11",
+    "type": "news",
+    "publisher": "VTV",
+    "title": "Bạc Liêu: Xử lý vụ việc học sinh đánh nhau trong lớp, quay clip đưa lên mạng",
+    "url": "https://vtv.vn/xa-hoi/bac-lieu-xu-ly-vu-viec-hoc-sinh-tieu-hoc-danh-nhau-trong-lop-quay-clip-dua-len-mang-20230411080031383.htm",
+    "scope": "Người chứng kiến, phát tán clip, hỗ trợ từ gia đình và nhà trường"
+  },
+  {
+    "id": "SRC2024_VNE",
+    "date": "2024-04-15",
+    "type": "news",
+    "publisher": "VnExpress",
+    "title": "Nữ sinh bị bạn đánh đập trước lớp dù đã quỳ gối, xin tha",
+    "url": "https://vnexpress.net/nu-sinh-bi-ban-danh-dap-truoc-lop-du-da-quy-goi-xin-tha-4734461.html",
+    "scope": "Nhục mạ, đánh hội đồng, lặp lại, nhân chứng"
+  },
+  {
+    "id": "SRC2024_VTV",
+    "date": "2024-10-25",
+    "type": "news",
+    "publisher": "VTV",
+    "title": "Học sinh hoang mang trước thông tin nhà vệ sinh bị gắn camera quay lén",
+    "url": "https://vtv.vn/xa-hoi/tp-ho-chi-minh-hoc-sinh-hoang-mang-truoc-thong-tin-nha-ve-sinh-bi-gan-camera-quay-len-20241025225326664.htm",
+    "scope": "Lo ngại riêng tư, thông tin chưa xác thực, phối hợp xác minh"
+  },
+  {
+    "id": "SRC2025_VNE",
+    "date": "2025-12-15",
+    "type": "news",
+    "publisher": "VnExpress",
+    "title": "Ép bạn vào nghĩa trang đánh, quay video",
+    "url": "https://vnexpress.net/ep-ban-vao-nghia-trang-danh-quay-video-4994204.html",
+    "scope": "Chặn đường, ép đưa tới nơi vắng, bạo lực và video"
+  },
+  {
+    "id": "SRC2025_VTV",
+    "date": "2025-11-08",
+    "type": "news",
+    "publisher": "VTV",
+    "title": "Vụ nam sinh lớp 8 đâm bạn ở Lào Cai: Nguyên nhân do mâu thuẫn từ trước",
+    "url": "https://vtv.vn/vu-nam-sinh-lop-8-dam-ban-o-lao-cai-nguyen-nhan-do-mau-thuan-tu-truoc-100251107010442723.htm",
+    "scope": "Mâu thuẫn kéo dài, mang hung khí, phòng ngừa khẩn cấp"
+  },
+  {
+    "id": "SRC2025_VTV_REVIEW",
+    "date": "2025-11-10",
+    "type": "news",
+    "publisher": "VTV",
+    "title": "Báo động đỏ bạo lực học đường",
+    "url": "https://vtv.vn/bao-dong-do-bao-luc-hoc-duong-100251110121919339.htm",
+    "scope": "Bạo lực thể chất, hội nhóm mạng, doxxing, tống tiền bằng clip"
+  },
+  {
+    "id": "SRC2026_VTV_ASSAULT",
+    "date": "2026-03-24",
+    "type": "news",
+    "publisher": "VTV",
+    "title": "Nhóm học sinh đánh hội đồng bạn, quay clip tung lên mạng gây bức xúc",
+    "url": "https://vtv.vn/nhom-hoc-sinh-danh-hoi-dong-ban-quay-clip-tung-len-mang-gay-buc-xuc-1002603240913006.htm",
+    "scope": "Đánh hội đồng, đăng clip, tổn thương thể chất và tâm lý"
+  },
+  {
+    "id": "SRC2026_VTV_DEEPFAKE",
+    "date": "2026-05-02",
+    "type": "news",
+    "publisher": "VTV",
+    "title": "Học sinh tổn thương vì ảnh giả từ AI lan trong trường học",
+    "url": "https://vtv.vn/tao-anh-nhay-cam-gia-tu-ai-nguy-co-trong-hoc-duong-100260502090419425.htm",
+    "scope": "Ảnh nhạy cảm giả bằng AI, phát tán, bảo vệ nạn nhân"
+  },
+  {
+    "id": "SRC2026_UNICEF",
+    "date": "2026-09-03",
+    "type": "research",
+    "publisher": "UNICEF",
+    "title": "1 in 5 children across 21 countries have experienced tech-facilitated sexual exploitation and abuse",
+    "url": "https://www.unicef.org/vietnam/press-releases/1-5-children-across-21-countries-have-experienced-tech-facilitated-sexual",
+    "scope": "Xâm hại trẻ em trực tuyến, mạng xã hội và game; số liệu 21 quốc gia, không áp thành thống kê riêng Việt Nam"
+  },
+  {
+    "id": "SRC2026_UNICEF_WELLBEING",
+    "date": null,
+    "type": "guidance",
+    "publisher": "UNICEF Việt Nam",
+    "title": "Mental Health",
+    "url": "https://www.unicef.org/vietnam/mental-health",
+    "scope": "Sức khỏe tinh thần, bắt nạt và nhu cầu tiếp cận trợ giúp; không khẳng định năm xuất bản"
+  },
+  {
+    "id": "SRC_111",
+    "date": null,
+    "type": "official-service",
+    "publisher": "Tổng đài Quốc gia Bảo vệ Trẻ em 111",
+    "title": "Số điện thoại bảo vệ trẻ em",
+    "url": "https://tongdai111.vn/tin/so-dien-thoai-bao-ve-tre-em",
+    "scope": "111 miễn phí, 24/7, tiếp nhận nguy cơ và hành vi xâm hại trẻ em"
+  },
+  {
+    "id": "SRC2024_UNICEF_ONLINE",
+    "date": null,
+    "type": "guidance",
+    "publisher": "UNICEF Việt Nam",
+    "title": "Bộ Quy tắc ứng xử về bảo vệ trẻ em trên môi trường mạng",
+    "url": "https://www.unicef.org/vietnam/vi/tai%20lieu/bo-quy-tac-ung-xu-ve-bao-ve-tre-em-tren-moi-truong-mang",
+    "scope": "Bảo vệ trẻ em trực tuyến; năm xuất bản trang cần xác nhận khi trích dẫn"
+  }
+]

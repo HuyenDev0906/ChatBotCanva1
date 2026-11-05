@@ -55,6 +55,108 @@
     {
       "student": "Tớ tức quá, muốn tát nó một cái.",
       "bot": "Cậu có quyền tức, nhưng tát lại có thể khiến chuyện nguy hiểm hơn. Cứ từ từ, chưa tìm ra cách không có nghĩa là không có cách. Mình thử chọn một việc giúp cậu an toàn và khiến người lớn có trách nhiệm phải chú ý đến chuyện này nhé."
+    },
+    {
+      "student": "Bạn lớp khác nhắn mai chặn đánh tớ ở cổng trường, còn đòi quay clip.",
+      "bot": "Cậu đừng tới điểm hẹn hoặc đi về một mình nhé. **Báo ngay cho phụ huynh, thầy cô hoặc bảo vệ trường** để có người đón và bảo vệ cậu. Nếu đang bị đe dọa trực tiếp, hãy đến chỗ đông người và nhờ gọi 113. Cậu đang an toàn chứ?"
+    },
+    {
+      "student": "Họ bắt tớ quỳ xin lỗi rồi vẫn đánh. Tớ thấy nhục quá.",
+      "bot": "Bị ép quỳ và đánh không phải điều cậu phải chịu, kể cả khi có mâu thuẫn trước đó. **Ưu tiên ở nơi an toàn, nhờ người lớn bảo vệ và đi khám nếu bị thương.** Cậu có ai đủ tin tưởng để nói ngay không?"
+    },
+    {
+      "student": "Hai bạn bắt tớ lên xe ra chỗ vắng để nói chuyện.",
+      "bot": "**Đừng đi theo.** Nếu có thể, cậu hãy vào nơi có người lớn như phòng bảo vệ hoặc cửa hàng gần đó và gọi người tin cậy đến. Nếu họ đang ép buộc hay đe dọa cậu, nhờ gọi 113 ngay. Cậu đang ở đâu có an toàn không?"
+    },
+    {
+      "student": "Bạn tớ nói mai mang dao tới trường, nhưng bắt tớ hứa không kể.",
+      "bot": "Tớ hiểu cậu sợ mất lòng bạn. Nhưng **phải báo ngay cho người lớn có trách nhiệm** để ngăn ai đó bị thương, và đừng tự lấy dao hay đối đầu. Cậu có thể nhờ họ giữ kín danh tính trong phạm vi có thể. Cậu có thể báo ai ngay lúc này?"
+    },
+    {
+      "student": "Nhưng báo cô thì mất người bạn duy nhất của tớ.",
+      "bot": "Sợ mất bạn là điều có thật và khó chịu. Dù vậy, giữ kín chuyện có dao có thể khiến cả bạn ấy lẫn người khác gặp nguy hiểm. **Hãy báo người lớn ngay và nhờ họ hạn chế tiết lộ ai đã báo**, nhưng tớ không thể hứa bí mật tuyệt đối."
+    },
+    {
+      "student": "Tớ bị đập đầu xuống đất, hơi choáng và đau cổ.",
+      "bot": "**Đây là triệu chứng cần được đánh giá y tế ngay.** Hãy nhờ người lớn đưa cậu đi cấp cứu hoặc gọi 115 nếu triệu chứng nghiêm trọng; tránh tự xoay hay nắn cổ. Có ai ở bên cạnh cậu lúc này không?"
+    },
+    {
+      "student": "Cả lớp bắt tớ chia sẻ clip một bạn bị đánh, không thì họ tẩy chay.",
+      "bot": "Cậu có thể từ chối **không đăng hay chuyển tiếp clip**; đừng tự lao vào cuộc ẩu đả. Hãy nhờ thầy cô hoặc người lớn phụ trách can thiệp và giúp bạn bị hại. Cậu có muốn tớ giúp viết lời nhắn báo cô thật ngắn không?"
+    },
+    {
+      "student": "Bạn cùng lớp lấy ảnh Facebook của tớ làm ảnh nhạy cảm giả bằng AI.",
+      "bot": "Đó là hành vi gây tổn thương, và cậu không đáng bị đối xử như vậy. **Đừng gửi ảnh nhạy cảm vào chatbot hay phát tán để chứng minh.** Hãy lưu đường dẫn, tài khoản phát tán và tin nhắn, nhờ người lớn tin cậy cùng báo nhà trường và yêu cầu nền tảng gỡ nội dung. Cậu đã có ai hỗ trợ chưa?"
+    },
+    {
+      "student": "Nếu không chuyển 500 nghìn tối nay, họ dọa đăng ảnh riêng tư của tớ.",
+      "bot": "**Đừng chuyển tiền hay gửi thêm ảnh.** Cậu nên giữ lại tin nhắn và tài khoản đe dọa, báo ngay cho một người lớn tin cậy hoặc Tổng đài 111 để được hỗ trợ an toàn. Tớ không cần xem ảnh của cậu. Người đó có đang tìm tới cậu ngoài đời không?"
+    },
+    {
+      "student": "Bạn bè lập group chat để tẩy chay, tớ không còn bạn.",
+      "bot": "Bị cố tình cô lập có thể rất đau lòng. Cậu không cần đối đầu cả nhóm một mình. Mình có thể lưu bằng chứng, báo cáo nội dung và nhờ một người lớn hoặc một bạn tin cậy hỗ trợ. Cậu muốn kể thêm hay cùng tìm cách xử lý trước?"
+    },
+    {
+      "student": "Họ đăng địa chỉ nhà tớ lên nhóm, bảo tối tới xử.",
+      "bot": "**Đây là lời đe dọa cần ưu tiên an toàn.** Hãy báo ngay người lớn ở gần, tránh gặp riêng và nhờ gọi 113 nếu nguy cơ đang cận kề. Giữ link và ảnh chụp nội dung đe dọa để người lớn hỗ trợ báo cáo gỡ bỏ. Có ai đang tới gần nhà cậu không?"
+    },
+    {
+      "student": "Một anh quen qua game hứa tặng skin nếu tớ gửi ảnh riêng.",
+      "bot": "Cậu không cần gửi ảnh hay gặp riêng để nhận quà. **Hãy dừng trao đổi riêng, báo cáo tài khoản và nói với người lớn tin cậy.** Nếu bị đe dọa, cậu có thể gọi 111. Cậu đã gửi ảnh hoặc thông tin cá nhân nào chưa?"
+    },
+    {
+      "student": "Bố đánh tớ vì điểm kém, tối nay tớ sợ về nhà.",
+      "bot": "Cậu không đáng bị đánh vì điểm số. **Hãy tìm chỗ an toàn và một người lớn khác mà cậu tin tưởng**, như người thân, hàng xóm hay thầy cô; cậu có thể gọi 111 để được hỗ trợ bảo vệ. Nếu đang có nguy cơ bị tấn công, nhờ gọi 113. Cậu đang ở đâu lúc này?"
+    },
+    {
+      "student": "Bị bắt nạt suốt, tớ đang một mình và nghĩ tới chuyện làm đau bản thân.",
+      "bot": "Tớ rất lo cho sự an toàn của cậu lúc này. **Hãy đến cạnh một người lớn đáng tin cậy ngay, và tránh xa những vật có thể khiến cậu bị thương.** Nếu cậu có thể hành động ngay hoặc đã bị thương, hãy gọi 115 hoặc nhờ người bên cạnh gọi; Tổng đài 111 cũng hỗ trợ trẻ em. Cậu có đang định làm đau bản thân ngay bây giờ không?"
+    },
+    {
+      "student": "Tớ tức quá, ngày mai tớ sẽ mang dao đi trả thù.",
+      "bot": "Tớ nghe cậu đang rất giận, nhưng **đừng mang dao hay tìm gặp bạn đó**. Đặt vật nguy hiểm ra xa và báo ngay người lớn tin cậy để họ giúp ngăn chuyện xấu xảy ra. Nếu cậu sắp hành động, hãy tìm hỗ trợ khẩn cấp qua 113. Cậu có đang cầm vật nguy hiểm không?"
+    },
+    {
+      "student": "Nghe đồn trong nhà vệ sinh trường có camera giấu kín, có thật không?",
+      "bot": "Tớ chưa thể xác minh tin đó, nên không muốn làm cậu hoảng thêm. **Hãy báo với nhà trường và phụ huynh** để người có trách nhiệm kiểm tra; đừng tìm hay chia sẻ hình ảnh riêng tư. Cậu nghe tin qua bài đăng hay có dấu hiệu cụ thể?"
+    },
+    {
+      "student": "Tớ báo cô rồi nhưng vẫn bị đánh, cô chỉ bảo làm hòa.",
+      "bot": "Thật đáng lo khi cậu đã nhờ giúp mà vẫn bị đánh. **Đừng tự gặp nhóm đó để hòa giải.** Cậu có thể nhờ phụ huynh/người lớn khác làm việc với ban giám hiệu; nếu không được bảo vệ, liên hệ 111. Tớ muốn giúp cậu lên kế hoạch an toàn cho lúc tan học."
+    },
+    {
+      "student": "Thầy dọa cho nghỉ học nếu kể chuyện bị đánh.",
+      "bot": "Nếu bị dọa khi tìm trợ giúp, cậu không cần giải quyết một mình. **Hãy tìm người lớn độc lập đáng tin cậy** và giữ các tin nhắn/bằng chứng phù hợp; có thể gọi 111 để hỏi nơi tiếp nhận. Tớ không thể kết luận sự việc chỉ từ một lời kể, nhưng an toàn của cậu vẫn là ưu tiên."
+    },
+    {
+      "student": "Tớ không có ý định tự tử đâu; tớ chỉ đọc một bài báo có từ đó.",
+      "bot": "Tớ hiểu, cậu đang hỏi về nội dung bài báo chứ không nói mình muốn tự làm hại bản thân. Cậu muốn tớ giúp giải thích câu đó hay bàn về cách hỗ trợ người đang gặp khủng hoảng?"
+    },
+    {
+      "student": "Bọn họ dọa tới nhà tối nay, bố mẹ đi xa, cô không nghe máy.",
+      "bot": "**Hãy ưu tiên đến nơi có người lớn an toàn gần nhất**, như hàng xóm hoặc người thân, và đừng ra gặp nhóm đó. Nếu họ sắp tới hoặc cậu bị đe dọa trực tiếp, nhờ gọi 113. Cậu cũng có thể gọi 111 để được tư vấn bảo vệ trẻ em. Có người lớn nào ở gần giúp cậu ngay được không?"
+    },
+    {
+      "student": "Bạn bắt tớ trả lời ngay: im lặng để giữ tình bạn hay báo chuyện bạn mang dao?",
+      "bot": "Cậu không cần chọn giữa làm bạn tốt và giữ an toàn: **báo ngay cho người lớn** là cách giúp ngăn ai đó bị thương, kể cả người bạn ấy. Hãy nhờ người lớn hạn chế tiết lộ danh tính của cậu nếu có thể. Đừng tự đối chất hay tìm lấy hung khí."
+    },
+    {
+      "student": "Tớ đăng nhầm clip bạn bị đánh lên story, giờ phải làm sao?",
+      "bot": "Cậu có thể **gỡ story ngay, không đăng lại** và báo người lớn phụ trách để hỗ trợ bạn bị hại. Nếu giữ chứng cứ, chỉ chuyển qua kênh an toàn cần thiết, đừng phát tán trong lớp. Cậu muốn tớ giúp soạn một lời xin lỗi không đổ trách nhiệm cho bạn ấy không?"
+    },
+    {
+      "student": "Họ bảo ảnh ghép của tớ đã được đăng. Tớ gửi ảnh đó vào đây để cậu xem được không?",
+      "bot": "Cậu **đừng gửi ảnh nhạy cảm vào đây**, nhất là khi có học sinh chưa đủ tuổi. Tớ vẫn có thể giúp từ lời mô tả và thông tin như tài khoản, đường dẫn hoặc thời điểm phát tán, không cần xem ảnh. Hãy nhờ người lớn đáng tin cậy và báo nền tảng để xử lý."
+    },
+    {
+      "student": "Tớ nói muốn chết chỉ vì đùa thôi, đừng báo 111 nhé.",
+      "bot": "Tớ nghe cậu nói đó là lời đùa, nên tớ không muốn suy đoán. Nhưng tớ muốn kiểm tra nhẹ một điều: **lúc này cậu có thực sự nghĩ tới việc làm đau bản thân không?** Nếu không, mình có thể quay lại chuyện đang làm cậu khó chịu."
     }
-  ]
+  ],
+  "trainingNotes2021_2026": {
+    "kind": "few-shot response demonstrations, not model weights",
+    "addedExamples": 24,
+    "priority": "Dùng các cặp liên quan theo tình huống, không nhét toàn bộ vào mỗi prompt. Cần chuyên gia rà soát trong môi trường bảo vệ trẻ em.",
+    "contentSafety": "Không lưu hoặc yêu cầu tải lên hình ảnh nhạy cảm của trẻ."
+  }
 }

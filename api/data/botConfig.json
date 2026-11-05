@@ -34,5 +34,51 @@
     "tự hại"
   ],
   "crisisNote": "💙 Cậu không phải một mình. Hãy báo ngay cho bố mẹ, thầy cô hoặc người lớn tin cậy đang ở gần, và cố gắng đừng ở một mình lúc này nhé. Cậu có thể gọi Tổng đài Quốc gia Bảo vệ Trẻ em 111 (miễn phí, 24/7). Nếu đang nguy hiểm hoặc cần cấp cứu, hãy nhờ người lớn gọi 115.",
-  "fallbackMessage": "Tớ đang gặp trục trặc nên chưa trả lời được. Nếu cậu đang thấy rất khó chịu hay lo lắng, hãy nói với người lớn tin cậy hoặc gọi 111 (miễn phí, 24/7) nhé."
+  "fallbackMessage": "Tớ đang gặp trục trặc nên chưa trả lời được. Nếu cậu đang thấy rất khó chịu hay lo lắng, hãy nói với người lớn tin cậy hoặc gọi 111 (miễn phí, 24/7) nhé.",
+  "riskTaxonomy2021_2026": {
+    "priorityOrder": [
+      "immediate_threat",
+      "physical_injury",
+      "self_harm",
+      "violence_intent",
+      "image_based_extortion",
+      "online_grooming",
+      "physical_violence",
+      "domestic_violence",
+      "online_privacy",
+      "cyberbullying",
+      "support_access",
+      "emotional_distress",
+      "normal"
+    ],
+    "levels": {
+      "critical": "Có nguy cơ tức thời, hung khí, đau đầu/cổ nghiêm trọng, ép đi nơi vắng, tự hại hoặc xâm hại tống tiền nghiêm trọng. Ưu tiên an toàn ngay.",
+      "high": "Đe dọa/bạo lực, tống tiền, xâm hại, rò rỉ dữ liệu. Hỏi tình trạng an toàn, khuyên tìm người lớn.",
+      "medium": "Bắt nạt tinh thần/ảnh hưởng tinh thần chưa thấy nguy cơ tức thời; lắng nghe, đưa lựa chọn, hỗ trợ báo cáo.",
+      "low": "Giao tiếp thường ngày."
+    },
+    "guardrails": [
+      "Từ khóa chỉ là tín hiệu, không kết luận một người đang khủng hoảng nếu là câu trích dẫn/phủ định.",
+      "Nguy cơ gần thời điểm hiện tại, có hung khí, có người đang bị thương phải được ưu tiên dù không có crisisKeywords.",
+      "Không cho lời hứa giữ bí mật khi có nguy cơ bạo lực nghiêm trọng.",
+      "Không xin hoặc lưu ảnh nhạy cảm của trẻ em; chỉ gợi ý giữ metadata và báo cáo qua kênh phù hợp.",
+      "Không suy diễn tình tiết thực tế của vụ việc từ tin tức khi tư vấn.",
+      "Bot không tự gọi cảnh sát, cấp cứu hay báo phụ huynh nếu hệ thống không có công cụ và sự cho phép."
+    ]
+  },
+  "fastResponseStrategy2021_2026": {
+    "retrievalMode": "keyword prefilter + topK examples/scenarios, optional semantic rerank only if needed",
+    "topScenarios": 2,
+    "topExamples": 2,
+    "priority": "Ưu tiên lớp phát hiện nguy cơ và quy tắc an toàn; sau đó chèn tối đa 2 ngữ cảnh phù hợp vào system instruction đã có.",
+    "latencyNote": "Bổ sung dữ liệu không tự làm mô hình sinh token nhanh hơn. Không gửi toàn bộ kho 20 tình huống cùng 38 ví dụ vào mỗi request.",
+    "fallbackPolicy": "Khi Gemini 429/503/timeout và có dấu hiệu nguy hiểm, dùng câu an toàn định sẵn đã được chuyên gia rà soát; không chờ retry vô hạn."
+  },
+  "proposedEmergencyFallbacks2021_2026": {
+    "status": "draft_requires_human_safeguarding_review",
+    "self_harm": "Tớ đang gặp trục trặc nhưng chuyện an toàn của cậu rất quan trọng. **Hãy đến cạnh người lớn tin cậy ngay và tránh xa vật có thể gây thương tích.** Nếu nguy hiểm ngay lúc này hoặc đã bị thương, nhờ gọi 115; cậu cũng có thể gọi 111 (miễn phí 24/7).",
+    "immediate_threat": "Tớ đang gặp trục trặc. **Nếu có người đang đe dọa bằng hung khí hoặc sắp tấn công, hãy tránh đối đầu, đến nơi an toàn và báo ngay người lớn hoặc gọi 113.** Nếu là trẻ em cần được bảo vệ, có thể gọi 111.",
+    "image_based_extortion": "Tớ đang gặp trục trặc. **Đừng gửi thêm ảnh hoặc chuyển tiền.** Hãy nhờ người lớn tin cậy giúp giữ lại tin nhắn/tài khoản đe dọa và liên hệ 111 để được hướng dẫn bảo vệ.",
+    "injury": "Tớ đang gặp trục trặc. **Nếu cậu bị đau đầu/cổ, khó thở, choáng hoặc chảy máu sau khi bị đánh, hãy nhờ người lớn hỗ trợ y tế ngay; khi khẩn cấp gọi 115.**"
+  }
 }
